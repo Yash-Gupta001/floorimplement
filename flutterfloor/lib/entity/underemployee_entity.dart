@@ -11,7 +11,7 @@ class UnderemployeeEntity {
   final String uid;  // username  
   final String password;
 
-  // Modified constructor without `id` (it will be auto-generated)
+  // constructor without `id` it will be auto-generated
   UnderemployeeEntity({
     required this.name,
     required this.email,

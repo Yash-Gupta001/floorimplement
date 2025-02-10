@@ -3,7 +3,6 @@ import 'package:flutterfloor/controller/registercontroller.dart';
 import 'package:flutterfloor/ui_component/appbar.dart';
 import 'package:flutterfloor/ui_component/button.dart';
 import 'package:get/get.dart';
-import 'package:flutterfloor/entity/employee_entity.dart';
 import 'package:flutterfloor/database/app_database.dart';
 
 class Register extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutterfloor/entity/underemployee_entity.dart';
 import 'package:flutterfloor/ui_component/appbar.dart';
 import 'package:flutterfloor/database/app_database.dart';
-import 'package:flutterfloor/entity/employee_entity.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -16,7 +16,7 @@ class ShowallemployeeState extends State<Showallemployee> {
   @override
   Widget build(BuildContext context) {
     final database = Get.find<AppDatabase>();
-    final dao = database.employeeDao;
+    final dao = database.underemployeedao;
 
     return Scaffold(
       appBar: CustomAppbar(title: 'All Employees', leading: true),
@@ -25,20 +25,20 @@ class ShowallemployeeState extends State<Showallemployee> {
         child: Column(
           children: [
             Expanded(
-              child: FutureBuilder<List<EmployeeEntity>>(
-                future: dao.printAllEmployees(), // Fetch all employees from DB
+              child: FutureBuilder<List<UnderemployeeEntity>>(
+                future: dao.printAllUnderemployees(), // Fetch all employees from DB
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    List<EmployeeEntity> employees = snapshot.data!;
+                    List<UnderemployeeEntity> underemployees = snapshot.data!;
 
                     return ListView.builder(
-                      itemCount: employees.length,
+                      itemCount: underemployees.length,
                       itemBuilder: (context, index) {
-                        EmployeeEntity employee = employees[index];
+                        UnderemployeeEntity employee = underemployees[index];
 
                         return Slidable(
                           endActionPane: ActionPane(
@@ -47,7 +47,7 @@ class ShowallemployeeState extends State<Showallemployee> {
                             children: [
                               SlidableAction(
                                 onPressed: (context) async {
-                                  await dao.deleteEmployee(employee);
+                                  await dao.deleteUnderemployee(employee);
                                   setState(() {});
                                 },
                                 backgroundColor: Colors.red,
@@ -111,7 +111,7 @@ class ShowallemployeeState extends State<Showallemployee> {
                       TextButton(
                         onPressed: () async {
                           await dao
-                              .deleteAllEmployees(); 
+                              .deleteAllUnderemployees(); 
                           setState(() {}); 
                           Get.back(); 
                         },

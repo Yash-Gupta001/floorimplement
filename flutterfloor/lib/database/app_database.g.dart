@@ -100,7 +100,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `underemployee_entity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `phone` TEXT NOT NULL, `uid` TEXT NOT NULL, `password` TEXT NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `employee_entity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `phone` TEXT NOT NULL, `uid` TEXT NOT NULL, `password` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `employee_entity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `phone` TEXT NOT NULL, `uid` TEXT NOT NULL, `password` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -177,6 +177,7 @@ class _$EmployeeDao extends EmployeeDao {
   Future<List<EmployeeEntity>> findAllEmployees() async {
     return _queryAdapter.queryList('SELECT * FROM employee_entity',
         mapper: (Map<String, Object?> row) => EmployeeEntity(
+            id: row['id'] as int,
             name: row['name'] as String,
             email: row['email'] as String,
             phone: row['phone'] as String,
@@ -188,6 +189,7 @@ class _$EmployeeDao extends EmployeeDao {
   Future<List<EmployeeEntity>> printAllEmployees() async {
     return _queryAdapter.queryList('SELECT * FROM employee_entity',
         mapper: (Map<String, Object?> row) => EmployeeEntity(
+            id: row['id'] as int,
             name: row['name'] as String,
             email: row['email'] as String,
             phone: row['phone'] as String,
@@ -203,6 +205,7 @@ class _$EmployeeDao extends EmployeeDao {
     return _queryAdapter.query(
         'SELECT * FROM employee_entity WHERE uid = ?1 AND password = ?2',
         mapper: (Map<String, Object?> row) => EmployeeEntity(
+            id: row['id'] as int,
             name: row['name'] as String,
             email: row['email'] as String,
             phone: row['phone'] as String,
@@ -215,6 +218,7 @@ class _$EmployeeDao extends EmployeeDao {
   Future<EmployeeEntity?> findEmployeeByUid(String uid) async {
     return _queryAdapter.query('SELECT * FROM employee_entity WHERE uid = ?1',
         mapper: (Map<String, Object?> row) => EmployeeEntity(
+            id: row['id'] as int,
             name: row['name'] as String,
             email: row['email'] as String,
             phone: row['phone'] as String,

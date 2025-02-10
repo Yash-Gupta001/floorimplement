@@ -21,6 +21,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final database = Get.find<AppDatabase>();
     final dao = database.employeeDao;
+    final underdao = database.underemployeedao;
 
     return Scaffold(
 
@@ -38,7 +39,7 @@ class Home extends StatelessWidget {
 
             SizedBox(height: 20),
 
-            // Display employee details using FutureBuilder
+            // Display employee details
             FutureBuilder<EmployeeEntity?>(
               future: dao.findEmployeeByUid(logincontroller.uid.value),
               builder: (context, snapshot) {
@@ -88,7 +89,7 @@ class Home extends StatelessWidget {
             CustomButton(
               text: 'Add Employee',
               onPressed: () async {
-                controller.showAddEmployeeDialog(context, dao);
+                controller.showAddUnderemployeeDialog(context, underdao);
               },
             ),
 

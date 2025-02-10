@@ -50,7 +50,8 @@ class Registercontroller {
         email: email.value,
         phone: phone.value,
         password: password.value,
-        uid: uid.value,
+        uid: uid.value, 
+        id: 0,
       );
       
       final dao = database.employeeDao;
@@ -58,6 +59,7 @@ class Registercontroller {
       Get.snackbar('Success', 'Employee Registered');
     } catch (e) {
       Get.snackbar('Error', 'Failed to register employee: $e');
+      print('$e');
     }
   }
 }
