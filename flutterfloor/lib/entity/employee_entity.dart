@@ -11,7 +11,7 @@ class EmployeeEntity {
   final String uid;  // username  
   final String password;
 
-  // constructor without `id` it will be auto-generated
+  
   EmployeeEntity({
     this.id,
     required this.name,

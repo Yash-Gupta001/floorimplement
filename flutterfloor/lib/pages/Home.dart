@@ -25,13 +25,11 @@ class Home extends StatelessWidget {
     final underdao = database.underemployeedao;
 
     return Scaffold(
-
       appBar: CustomAppbar(title: 'User details', leading: false),
-
 
       body: DoubleBackToCloseApp(
         snackBar: const SnackBar(
-          content: Text('pres again to exit'),
+          content: Text('Press again to exit'),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -39,12 +37,10 @@ class Home extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-        
-              
-        
+              // Employee Details Section
               SizedBox(height: 20),
-        
-              // Display employee details
+
+              // Display employee details with improved text styling and layout
               FutureBuilder<EmployeeEntity?>(
                 future: dao.findEmployeeByUid(logincontroller.uid.value),
                 builder: (context, snapshot) {
@@ -55,18 +51,44 @@ class Home extends StatelessWidget {
                   } else if (snapshot.hasData) {
                     var employee = snapshot.data;
                     if (employee != null) {
-                      return Column(
-                        children: [
-                          Text(
-                            'Employee Details\n'
-                            'Employee ID: ${employee.id}\n'
-                            'Employee Name: ${employee.name}\n'
-                            'Employee Email: ${employee.email}\n'
-                            'Employee Phone: ${employee.phone}\n'
-                            'Employee User Name: ${employee.uid}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
+                      return Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Employee Details\n',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blueAccent,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Employee ID: ${employee.id}',
+                              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Employee Name: ${employee.name}',
+                              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Employee Email: ${employee.email}',
+                              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Employee Phone: ${employee.phone}',
+                              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Employee User Name: ${employee.uid}',
+                              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                            ),
+                          ],
+                        ),
                       );
                     } else {
                       return Text('No employee found');
@@ -76,27 +98,27 @@ class Home extends StatelessWidget {
                   }
                 },
               ),
-        
-              SizedBox(height: 10),
-        
-              // go to show all employee page
+
+              SizedBox(height: 20),
+
+              // Get Team Details Button with enhanced styling
               CustomButton(
                 text: 'Get Team Details',
                 onPressed: () {
                   Get.to(Showallemployee());
                 },
               ),
-        
+
               SizedBox(height: 13),
-        
-              // Add Employee button
+
+              // Add Employee Button with improved design
               CustomButton(
-                text: 'Add Employee',
+                text: 'Add Team Member',
                 onPressed: () async {
                   controller.showAddUnderemployeeDialog(context, underdao);
                 },
               ),
-        
+
               SizedBox(height: 10),
             ],
           ),
