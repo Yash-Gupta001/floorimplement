@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutterfloor/dao/underemployeedao.dart';
 import 'package:flutterfloor/database/app_database.dart';
 import 'package:flutterfloor/entity/underemployee_entity.dart';
-import 'package:flutterfloor/ui_component/passwordfield.dart';
 import 'package:get/get.dart';
 
 class Insertcontroller extends GetxController {
@@ -17,12 +16,15 @@ class Insertcontroller extends GetxController {
   RxString phone = ''.obs;
   RxString password = ''.obs;
 
-  var isFormValid = true.obs; // To track form validity
+  var isFormValid = true.obs;
 
   // Validation for the employee fields
   bool validateForm() {
-    isFormValid.value =
-        uid.value.isNotEmpty && name.value.isNotEmpty && email.value.isNotEmpty && phone.value.isNotEmpty && password.value.isNotEmpty;
+    isFormValid.value = uid.value.isNotEmpty &&
+        name.value.isNotEmpty &&
+        email.value.isNotEmpty &&
+        phone.value.isNotEmpty &&
+        password.value.isNotEmpty;
     return isFormValid.value;
   }
 
@@ -34,16 +36,14 @@ class Insertcontroller extends GetxController {
         name: name.value,
         email: email.value,
         phone: phone.value,
-        password: password.value,
-        uid: uid.value,
       );
 
       try {
         // Insert underemployee into the database using the DAO
         await database.underemployeedao.insertUnderemployee(underemployee);
-        Get.snackbar('Success', 'Employee added successfully');
+        // Removed Get.snackbar from here to avoid duplication
       } catch (e) {
-        Get.snackbar('Error', 'Failed to add employee: $e');
+        Get.snackbar('Error', 'Failed to add member: $e');
       }
     } else {
       Get.snackbar('Validation Error', 'Please fill all the fields correctly');
@@ -55,8 +55,6 @@ class Insertcontroller extends GetxController {
     final TextEditingController nameController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController phoneController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    final TextEditingController uidController = TextEditingController();
 
     showDialog(
       context: context,
@@ -69,10 +67,6 @@ class Insertcontroller extends GetxController {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextField(
-                    controller: uidController,
-                    decoration: InputDecoration(labelText: 'User Name'),
-                  ),
-                  TextField(
                     controller: nameController,
                     decoration: InputDecoration(labelText: 'Name'),
                   ),
@@ -80,18 +74,11 @@ class Insertcontroller extends GetxController {
                     controller: emailController,
                     decoration: InputDecoration(labelText: 'Email'),
                   ),
-          
                   TextField(
                     controller: phoneController,
                     decoration: InputDecoration(labelText: 'Phone'),
                     keyboardType: TextInputType.phone,
                   ),
-                  
-                  PasswordField(
-                    passwordController: passwordController,
-                  ),
-          
-          
                 ],
               ),
               actions: <Widget>[
@@ -106,26 +93,21 @@ class Insertcontroller extends GetxController {
                     // Validate form data before adding employee
                     if (nameController.text.isNotEmpty &&
                         emailController.text.isNotEmpty &&
-                        phoneController.text.isNotEmpty &&
-                        passwordController.text.isNotEmpty &&
-                        uidController.text.isNotEmpty) {
-          
+                        phoneController.text.isNotEmpty) {
                       var underemployee = UnderemployeeEntity(
                         // ID will be auto-generated
                         name: nameController.text,
                         email: emailController.text,
                         phone: phoneController.text,
-                        password: passwordController.text,
-                        uid: uidController.text,
                       );
                       await dao.insertUnderemployee(underemployee);
-                      Get.snackbar('Success', 'Employee added');
+                      Get.snackbar('Success', 'Member added'); 
                       Navigator.of(context).pop(); // Close the dialog
                     } else {
                       Get.snackbar('Error', 'Please fill in all fields');
                     }
                   },
-                  child: Text('Add Employee'),
+                  child: Text('Add Team Member'),
                 ),
               ],
             ),
@@ -135,4 +117,3 @@ class Insertcontroller extends GetxController {
     );
   }
 }
-

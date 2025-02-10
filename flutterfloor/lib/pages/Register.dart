@@ -95,7 +95,8 @@ class Register extends StatelessWidget {
                   if (controller.validateUser()) {
                     // Call registerEmployee without passing id (it's auto-generated)
                     await controller.registerEmployee();
-                    Get.snackbar('Success', 'Employee Registered');
+                    // Get.snackbar('Success', 'Employee Registered');
+
                   } else {
                     Get.snackbar(
                         'Validation Error', 'Please fill all fields correctly');

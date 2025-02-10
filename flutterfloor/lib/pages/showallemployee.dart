@@ -19,14 +19,14 @@ class ShowallemployeeState extends State<Showallemployee> {
     final dao = database.underemployeedao;
 
     return Scaffold(
-      appBar: CustomAppbar(title: 'All Employees', leading: true),
+      appBar: CustomAppbar(title: 'All Team Members', leading: true),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
             Expanded(
               child: FutureBuilder<List<UnderemployeeEntity>>(
-                future: dao.printAllUnderemployees(), // Fetch all employees from DB
+                future: dao.printAllUnderemployees(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -75,7 +75,6 @@ class ShowallemployeeState extends State<Showallemployee> {
                               title: Text(employee.name),
                               subtitle: Text(
                                   'Employee Email: ${employee.email}\n'
-                                  'Employee User Name: ${employee.uid}\n'
                                   'Employee Phone number: ${employee.phone}'),
                             ),
                           ),
@@ -96,14 +95,14 @@ class ShowallemployeeState extends State<Showallemployee> {
                 // Show confirmation dialog before deleting all employees
                 Get.dialog(
                   AlertDialog(
-                    title: Text('Delete All Employees'),
+                    title: Text('Delete All Members'),
                     content:
-                        Text('Are you sure you want to delete all employees?'),
+                        Text('Are you sure you want to delete all members?'),
                     actions: [
                       // Cancel button
                       TextButton(
                         onPressed: () {
-                          Get.back(); // Close the dialog
+                          Get.back(); 
                         },
                         child: Text('Cancel'),
                       ),
@@ -123,7 +122,7 @@ class ShowallemployeeState extends State<Showallemployee> {
               },
               // ignore: sort_child_properties_last
               child: Text(
-                'Delete All Employees',
+                'Delete All Members',
                 style: TextStyle(
                   fontSize: 16, 
                   fontWeight: FontWeight.bold,
