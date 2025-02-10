@@ -18,6 +18,8 @@ class Registercontroller {
   var isPhoneValid = true.obs;
   var isUidValid = true.obs;
   var isPasswordValid = true.obs;
+
+  // RxBool for password visibility
   var isPasswordVisible = false.obs; // Initially password is hidden
 
 
@@ -51,7 +53,6 @@ class Registercontroller {
         phone: phone.value,
         password: password.value,
         uid: uid.value, 
-        id: 0,
       );
       
       final dao = database.employeeDao;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterfloor/dao/underemployeedao.dart';
 import 'package:flutterfloor/database/app_database.dart';
 import 'package:flutterfloor/entity/underemployee_entity.dart';
+import 'package:flutterfloor/ui_component/passwordfield.dart';
 import 'package:get/get.dart';
 
 class Insertcontroller extends GetxController {
@@ -34,7 +35,7 @@ class Insertcontroller extends GetxController {
         email: email.value,
         phone: phone.value,
         password: password.value,
-        uid: uid.value, 
+        uid: uid.value,
       );
 
       try {
@@ -78,14 +79,18 @@ class Insertcontroller extends GetxController {
                   controller: emailController,
                   decoration: InputDecoration(labelText: 'Email'),
                 ),
+
                 TextField(
                   controller: phoneController,
                   decoration: InputDecoration(labelText: 'Phone'),
+                  keyboardType: TextInputType.phone,
                 ),
-                TextField(
-                  controller: passwordController,
-                  decoration: InputDecoration(labelText: 'Password'),
+                
+                PasswordField(
+                  passwordController: passwordController,
                 ),
+
+
               ],
             ),
             actions: <Widget>[
@@ -128,3 +133,4 @@ class Insertcontroller extends GetxController {
     );
   }
 }
+

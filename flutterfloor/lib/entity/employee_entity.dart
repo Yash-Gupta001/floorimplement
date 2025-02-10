@@ -3,7 +3,7 @@ import 'package:floor/floor.dart';
 @Entity(tableName: 'employee_entity')
 class EmployeeEntity {
   @PrimaryKey(autoGenerate: true)
-  int id;
+  int? id;
 
   final String name;
   final String email;
@@ -13,7 +13,7 @@ class EmployeeEntity {
 
   // constructor without `id` it will be auto-generated
   EmployeeEntity({
-    required this.id,
+    this.id,
     required this.name,
     required this.email,
     required this.phone,

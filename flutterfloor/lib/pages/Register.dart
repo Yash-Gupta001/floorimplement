@@ -44,7 +44,8 @@ class Register extends StatelessWidget {
                 label: "Phone",
                 controller: controller.phone,
                 isValid: controller.isPhoneValid,
-                keyboardType: TextInputType.phone, // This ensures numeric keyboard appears
+                keyboardType: TextInputType
+                    .phone, // This ensures numeric keyboard appears
                 onChanged: (text) {
                   controller.phone.value = text;
                 },
@@ -65,7 +66,8 @@ class Register extends StatelessWidget {
                 label: "Password",
                 controller: controller.password,
                 isValid: controller.isPasswordValid,
-                obscureText: !controller.isPasswordVisible.value, // Use RxBool for visibility
+                obscureText: !controller.isPasswordVisible
+                    .value, // Correct way to access the RxBool
                 onChanged: (text) {
                   controller.password.value = text;
                 },
@@ -77,6 +79,7 @@ class Register extends StatelessWidget {
                     color: Colors.grey,
                   ),
                   onPressed: () {
+                    // Toggle the visibility of the password when the icon is pressed
                     controller.isPasswordVisible.value =
                         !controller.isPasswordVisible.value;
                   },
@@ -94,7 +97,8 @@ class Register extends StatelessWidget {
                     await controller.registerEmployee();
                     Get.snackbar('Success', 'Employee Registered');
                   } else {
-                    Get.snackbar('Validation Error', 'Please fill all fields correctly');
+                    Get.snackbar(
+                        'Validation Error', 'Please fill all fields correctly');
                   }
                 },
               ),
@@ -111,7 +115,8 @@ class Register extends StatelessWidget {
     required RxBool isValid,
     bool obscureText = false,
     required ValueChanged<String> onChanged,
-    TextInputType keyboardType = TextInputType.text, // Default to normal keyboard
+    TextInputType keyboardType =
+        TextInputType.text, // Default to normal keyboard
     Widget? suffixIcon, // Suffix icon to add something like an eye icon
   }) {
     return Obx(() {

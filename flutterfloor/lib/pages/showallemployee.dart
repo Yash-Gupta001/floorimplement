@@ -74,7 +74,6 @@ class ShowallemployeeState extends State<Showallemployee> {
                               title: Text(employee.name),
                               subtitle: Text(
                                   'Employee Email: ${employee.email}\n'
-                                  'Employee ID: ${employee.id}\n'
                                   'Employee User Name: ${employee.uid}\n'
                                   'Employee Phone number: ${employee.phone}'),
                             ),
