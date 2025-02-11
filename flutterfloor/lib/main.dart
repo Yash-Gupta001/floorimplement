@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfloor/database/app_database.dart';
-import 'package:flutterfloor/pages/Home.dart';
-import 'package:flutterfloor/pages/Register.dart';
-import 'package:flutterfloor/pages/login.dart';
 import 'package:get/get.dart';
+
+import 'database/app_database.dart';
+import 'pages/Home.dart';
+import 'pages/Register.dart';
+import 'pages/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfloor/controller/registercontroller.dart';
-import 'package:flutterfloor/ui_component/appbar.dart';
-import 'package:flutterfloor/ui_component/button.dart';
 import 'package:get/get.dart';
 import 'package:flutterfloor/database/app_database.dart';
+
+import '../controller/registercontroller.dart';
+import '../ui_component/appbar.dart';
+import '../ui_component/button.dart';
 
 class Register extends StatelessWidget {
   final Registercontroller controller =
@@ -29,7 +30,7 @@ class Register extends StatelessWidget {
                     controller.name.value = text;
                   },
                 ),
-      
+
                 // Email TextField
                 _buildTextField(
                   label: "Email",
@@ -39,7 +40,7 @@ class Register extends StatelessWidget {
                     controller.email.value = text;
                   },
                 ),
-      
+
                 // Phone TextField
                 _buildTextField(
                   label: "Phone",
@@ -51,7 +52,7 @@ class Register extends StatelessWidget {
                     controller.phone.value = text;
                   },
                 ),
-      
+
                 // Username TextField
                 _buildTextField(
                   label: "Username",
@@ -61,7 +62,7 @@ class Register extends StatelessWidget {
                     controller.uid.value = text;
                   },
                 ),
-      
+
                 // Password TextField with eye icon for visibility toggle
                 _buildTextField(
                   label: "Password",
@@ -86,9 +87,9 @@ class Register extends StatelessWidget {
                     },
                   ),
                 ),
-      
+
                 SizedBox(height: 20),
-      
+
                 // Register Button with validation check
                 CustomButton(
                   text: 'Register',
@@ -97,10 +98,9 @@ class Register extends StatelessWidget {
                       // Call registerEmployee without passing id (it's auto-generated)
                       await controller.registerEmployee();
                       // Get.snackbar('Success', 'Employee Registered');
-      
                     } else {
-                      Get.snackbar(
-                          'Validation Error', 'Please fill all fields correctly');
+                      Get.snackbar('Validation Error',
+                          'Please fill all fields correctly');
                     }
                   },
                 ),
@@ -120,8 +120,9 @@ class Register extends StatelessWidget {
     required ValueChanged<String> onChanged,
     TextInputType keyboardType =
         TextInputType.text, // Default to normal keyboard
-    Widget? suffixIcon, // Suffix icon to add something like an eye icon
-  }) {
+    Widget? suffixIcon, // Suffix icon to add an eye icon
+  }) 
+  {
     return Obx(() {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,

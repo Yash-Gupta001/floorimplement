@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfloor/controller/insertcontroller.dart';
-import 'package:flutterfloor/controller/logincontroller.dart';
-import 'package:flutterfloor/database/app_database.dart';
-import 'package:flutterfloor/entity/employee_entity.dart';
-import 'package:flutterfloor/ui_component/appbar.dart';
-import 'package:flutterfloor/ui_component/button.dart';
 import 'package:get/get.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 
+import '../controller/insertcontroller.dart';
+import '../controller/logincontroller.dart';
+import '../database/app_database.dart';
+import '../entity/employee_entity.dart';
+import '../ui_component/appbar.dart';
+import '../ui_component/button.dart';
 import 'showunderemployee.dart';
-import 'login.dart'; 
+import 'login.dart';
 
 class Home extends StatelessWidget {
   final Insertcontroller controller =
@@ -39,7 +39,7 @@ class Home extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 20),
-      
+
                 // Using FutureBuilder to fetch employee data
                 FutureBuilder<EmployeeEntity?>(
                   future: dao.findEmployeeByUid(logincontroller.uid.value),
@@ -76,9 +76,9 @@ class Home extends StatelessWidget {
                               Text('Employee Phone: ${employee.phone}',
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.grey[700])),
-      
+
                               SizedBox(height: 20),
-      
+
                               // to view the team details
                               CustomButton(
                                 text: 'Get Team Details',
@@ -87,9 +87,9 @@ class Home extends StatelessWidget {
                                   Get.to(() => Showunderemployee(employee.id!));
                                 },
                               ),
-      
+
                               SizedBox(height: 13),
-      
+
                               // Custom Button to add a team member
                               CustomButton(
                                 text: 'Add Team Member',
@@ -109,13 +109,13 @@ class Home extends StatelessWidget {
                     }
                   },
                 ),
-      
+
                 SizedBox(height: 10),
               ],
             ),
           ),
         ),
-      
+
         // Action Button to log out
         floatingActionButton: FloatingActionButton.extended(
           heroTag: 'logout',
@@ -147,6 +147,7 @@ class Home extends StatelessWidget {
           ),
           elevation: 10,
           tooltip: 'Logout',
+          // ignore: deprecated_member_use
           splashColor: Colors.white.withOpacity(0.3),
           icon: Icon(
             Icons.logout,

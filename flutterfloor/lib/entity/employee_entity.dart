@@ -8,10 +8,9 @@ class EmployeeEntity {
   final String name;
   final String email;
   final String phone;
-  final String uid;  // username  
+  final String uid; // username
   final String password;
 
-  
   EmployeeEntity({
     this.id,
     required this.name,

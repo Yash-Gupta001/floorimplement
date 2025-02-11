@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfloor/database/app_database.dart';
-import 'package:flutterfloor/entity/underemployee_entity.dart';
-import 'package:flutterfloor/ui_component/appbar.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import '../database/app_database.dart';
+import '../entity/underemployee_entity.dart';
+import '../ui_component/appbar.dart';
 
 class Showunderemployee extends StatefulWidget {
   final int employeeId;
@@ -12,12 +13,10 @@ class Showunderemployee extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _ShowunderemployeeState createState() =>
-      _ShowunderemployeeState();
+  _ShowunderemployeeState createState() => _ShowunderemployeeState();
 }
 
-class _ShowunderemployeeState
-    extends State<Showunderemployee> {
+class _ShowunderemployeeState extends State<Showunderemployee> {
   final AppDatabase database = Get.find<AppDatabase>();
 
   // to store the current future of underemployees
@@ -30,7 +29,8 @@ class _ShowunderemployeeState
   }
 
   Future<List<UnderemployeeEntity>> _fetchUnderemployees() async {
-    return await database.underemployeedao.findUnderemployeesByEmployeeId(widget.employeeId);
+    return await database.underemployeedao
+        .findUnderemployeesByEmployeeId(widget.employeeId);
   }
 
   @override
@@ -38,7 +38,6 @@ class _ShowunderemployeeState
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppbar(title: 'Team Members', leading: true),
-        
         body: Column(
           children: [
             // list of underemployees
@@ -48,17 +47,15 @@ class _ShowunderemployeeState
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
-                  } 
-                  else if (snapshot.hasError) {
+                  } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
-                  } 
-                  else if (snapshot.hasData) {
+                  } else if (snapshot.hasData) {
                     var underemployees = snapshot.data;
                     return ListView.builder(
                       itemCount: underemployees?.length ?? 0,
                       itemBuilder: (context, index) {
                         var underemployee = underemployees![index];
-                        
+
                         return Slidable(
                           endActionPane: ActionPane(
                             motion: const DrawerMotion(),
@@ -67,14 +64,18 @@ class _ShowunderemployeeState
                               SlidableAction(
                                 onPressed: (context) async {
                                   // Delete underemployee from the database
-                                  await database.underemployeedao.deleteUnderemployee(underemployee);
+                                  await database.underemployeedao
+                                      .deleteUnderemployee(underemployee);
                                   // After deletion, re-fetch the updated data
                                   setState(() {
-                                    futureUnderemployees = _fetchUnderemployees();
+                                    futureUnderemployees =
+                                        _fetchUnderemployees();
                                   });
                                   // Update UI after delete
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('${underemployee.name} deleted')),
+                                    SnackBar(
+                                        content: Text(
+                                            '${underemployee.name} deleted')),
                                   );
                                 },
                                 backgroundColor: Colors.red,
@@ -82,7 +83,8 @@ class _ShowunderemployeeState
                                 icon: Icons.delete,
                                 label: 'Delete',
                                 borderRadius: BorderRadius.circular(8),
-                                padding: const EdgeInsets.symmetric(horizontal: 14),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 14),
                               ),
                             ],
                           ),
@@ -105,33 +107,34 @@ class _ShowunderemployeeState
                 },
               ),
             ),
-            
+
             //for deleting all members
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
-          
                   Get.dialog(
                     AlertDialog(
                       title: const Text('Delete All Members'),
-                      content: const Text('Are you sure you want to delete all members?'),
+                      content: const Text(
+                          'Are you sure you want to delete all members?'),
                       actions: [
                         // Cancel button
                         TextButton(
                           onPressed: () {
-                            Get.back(); 
+                            Get.back();
                           },
                           child: const Text('Cancel'),
                         ),
                         // Delete button
                         TextButton(
                           onPressed: () async {
-                            await database.underemployeedao.deleteAllUnderemployees();  
+                            await database.underemployeedao
+                                .deleteAllUnderemployees();
                             setState(() {
-                              futureUnderemployees = _fetchUnderemployees(); 
+                              futureUnderemployees = _fetchUnderemployees();
                             });
-                            Get.back(); 
+                            Get.back();
                           },
                           child: const Text('Delete'),
                         ),
@@ -140,22 +143,20 @@ class _ShowunderemployeeState
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, 
-                  minimumSize: const Size(double.infinity, 50), 
+                  backgroundColor: Colors.red,
+                  minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25), 
+                    borderRadius: BorderRadius.circular(25),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 15), 
-                  side: const BorderSide(
-                    color: Colors.white,
-                    width: 2 ), 
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  side: const BorderSide(color: Colors.white, width: 2),
                 ),
                 child: Text(
                   'Delete All Members',
                   style: TextStyle(
-                    fontSize: 16, 
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white, 
+                    color: Colors.white,
                   ),
                 ),
               ),

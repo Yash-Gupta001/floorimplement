@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:floor/floor.dart';
-import 'package:flutterfloor/dao/employeedao.dart';
-import 'package:flutterfloor/dao/underemployeedao.dart';  
-import 'package:flutterfloor/entity/employee_entity.dart';
-import 'package:flutterfloor/entity/underemployee_entity.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
+
+import '../dao/employeedao.dart';
+import '../dao/underemployeedao.dart';
+import '../entity/employee_entity.dart';
+import '../entity/underemployee_entity.dart';
 
 part 'app_database.g.dart';  
 
@@ -16,3 +17,4 @@ abstract class AppDatabase extends FloorDatabase {
 }
 
 // flutter packages pub run build_runner build
+

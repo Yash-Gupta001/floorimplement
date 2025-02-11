@@ -18,7 +18,9 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: leading ? IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: Icon(Icons.arrow_back,
+          color: Colors.white,
+        ),
         onPressed: () {
           Get.back();
         },

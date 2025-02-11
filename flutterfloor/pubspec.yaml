@@ -20,6 +20,7 @@ dependencies:
   sqflite: ^2.4.1
   local_auth: ^2.3.0
   double_back_to_close_app: ^2.1.0
+  shared_preferences: ^2.5.2
 
 dev_dependencies:
   flutter_test:

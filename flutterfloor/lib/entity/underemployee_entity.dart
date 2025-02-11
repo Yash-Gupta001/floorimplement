@@ -1,5 +1,6 @@
 import 'package:floor/floor.dart';
-import 'package:flutterfloor/entity/employee_entity.dart';
+
+import 'employee_entity.dart';
 
 @Entity(
   tableName: 'underemployee_entity',
@@ -20,7 +21,7 @@ class UnderemployeeEntity {
   final String phone;
 
   @ColumnInfo(name: 'employeeId')
-  final int employeeId;  // Foreign key reference to EmployeeEntity
+  final int employeeId; // Foreign key reference to EmployeeEntity
 
   UnderemployeeEntity({
     this.id,
@@ -33,5 +34,5 @@ class UnderemployeeEntity {
   @override
   String toString() {
     return 'Underemployee(id: $id, name: $name, employeeId: $employeeId)';
-  } 
+  }
 }

@@ -9,8 +9,8 @@ class Registercontroller {
 
   RxString name = "".obs;
   RxString email = "".obs;
-  RxString phone = "".obs; 
-  RxString uid = "".obs;   // username
+  RxString phone = "".obs;
+  RxString uid = "".obs; // username
   RxString password = "".obs;
 
   var isNameValid = true.obs;
@@ -21,7 +21,6 @@ class Registercontroller {
 
   // RxBool for password visibility
   var isPasswordVisible = false.obs; // Initially password is hidden
-
 
   // Validate the user input fields
   bool validateUser() {
@@ -39,9 +38,14 @@ class Registercontroller {
     isUidValid.value = uid.value.isNotEmpty && uid.value.length >= 6;
 
     // Validate Password
-    isPasswordValid.value = password.value.isNotEmpty && password.value.length >= 6;
+    isPasswordValid.value =
+        password.value.isNotEmpty && password.value.length >= 6;
 
-    return isNameValid.value && isEmailValid.value && isPhoneValid.value && isUidValid.value && isPasswordValid.value;
+    return isNameValid.value &&
+        isEmailValid.value &&
+        isPhoneValid.value &&
+        isUidValid.value &&
+        isPasswordValid.value;
   }
 
   // Register the employee into the database
@@ -52,15 +56,15 @@ class Registercontroller {
         email: email.value,
         phone: phone.value,
         password: password.value,
-        uid: uid.value, 
+        uid: uid.value,
       );
-      
+
       final dao = database.employeeDao;
       await dao.insertEmployee(employee);
       Get.snackbar('Success', 'Employee Registered');
     } catch (e) {
       Get.snackbar('Error', 'Failed to register employee: $e');
-      print('$e');
+      // print('$e');
     }
   }
 }

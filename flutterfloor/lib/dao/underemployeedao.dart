@@ -1,13 +1,12 @@
 import 'package:floor/floor.dart';
-import 'package:flutterfloor/entity/underemployee_entity.dart';
+
+import '../entity/underemployee_entity.dart';
 
 @dao
-
 abstract class Underemployeedao {
-
   @Query('SELECT * FROM underemployee_entity WHERE employeeId = :employeeId')
-  Future<List<UnderemployeeEntity>> findUnderemployeesByEmployeeId(int employeeId);
-
+  Future<List<UnderemployeeEntity>> findUnderemployeesByEmployeeId(
+      int employeeId);
 
   // query find all underemployees
   @Query('SELECT * FROM underemployee_entity')
@@ -16,7 +15,7 @@ abstract class Underemployeedao {
   // print all underemployees
   @Query('SELECT * FROM underemployee_entity')
   Future<List<UnderemployeeEntity>> printAllUnderemployees();
-  
+
   // insert an underemployee
   @insert
   Future<void> insertUnderemployee(UnderemployeeEntity underemployee);
@@ -30,11 +29,13 @@ abstract class Underemployeedao {
   Future<void> deleteUnderemployee(UnderemployeeEntity underemployee);
 
   // Query to find an underemployee by their UID and password
-  @Query('SELECT * FROM underemployee_entity WHERE uid = :uid AND password = :password') 
-  Future<UnderemployeeEntity?> findUnderemployeeByUidAndPassword(String uid, String password);
+  @Query(
+      'SELECT * FROM underemployee_entity WHERE uid = :uid AND password = :password')
+  Future<UnderemployeeEntity?> findUnderemployeeByUidAndPassword(
+      String uid, String password);
 
   // Query to find an underemployee by their UID
-  @Query('SELECT * FROM underemployee_entity WHERE uid = :uid') 
+  @Query('SELECT * FROM underemployee_entity WHERE uid = :uid')
   Future<UnderemployeeEntity?> findUnderemployeeByUid(String uid);
 
   // delete all underemployees from the database
