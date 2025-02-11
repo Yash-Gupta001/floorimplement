@@ -5,19 +5,19 @@ import 'package:flutterfloor/ui_component/appbar.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class FindUnderemployeesByEmployeeId extends StatefulWidget {
+class Showunderemployee extends StatefulWidget {
   final int employeeId;
 
-  const FindUnderemployeesByEmployeeId(this.employeeId);
+  const Showunderemployee(this.employeeId);
 
   @override
   // ignore: library_private_types_in_public_api
-  _FindUnderemployeesByEmployeeIdState createState() =>
-      _FindUnderemployeesByEmployeeIdState();
+  _ShowunderemployeeState createState() =>
+      _ShowunderemployeeState();
 }
 
-class _FindUnderemployeesByEmployeeIdState
-    extends State<FindUnderemployeesByEmployeeId> {
+class _ShowunderemployeeState
+    extends State<Showunderemployee> {
   final AppDatabase database = Get.find<AppDatabase>();
 
   // Variable to store the current future of underemployees
