@@ -4,6 +4,11 @@ import 'package:flutterfloor/entity/underemployee_entity.dart';
 @dao
 
 abstract class Underemployeedao {
+
+  @Query('SELECT * FROM underemployee_entity WHERE employeeId = :employeeId')
+  Future<List<UnderemployeeEntity>> findUnderemployeesByEmployeeId(int employeeId);
+
+
   // query find all underemployees
   @Query('SELECT * FROM underemployee_entity')
   Future<List<UnderemployeeEntity>> findAllUnderemployees();

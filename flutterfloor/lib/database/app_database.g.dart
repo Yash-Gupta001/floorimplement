@@ -98,7 +98,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `underemployee_entity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `phone` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `underemployee_entity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `phone` TEXT NOT NULL, `employeeId` INTEGER NOT NULL, FOREIGN KEY (`employeeId`) REFERENCES `employee_entity` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `employee_entity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `phone` TEXT NOT NULL, `uid` TEXT NOT NULL, `password` TEXT NOT NULL)');
 
@@ -172,6 +172,20 @@ class _$EmployeeDao extends EmployeeDao {
   final UpdateAdapter<EmployeeEntity> _employeeEntityUpdateAdapter;
 
   final DeletionAdapter<EmployeeEntity> _employeeEntityDeletionAdapter;
+
+  @override
+  Future<List<UnderemployeeEntity>> findUnderemployeesByEmployeeId(
+      int employeeId) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM underemployee_entity WHERE employeeId = ?1',
+        mapper: (Map<String, Object?> row) => UnderemployeeEntity(
+            id: row['id'] as int?,
+            name: row['name'] as String,
+            email: row['email'] as String,
+            phone: row['phone'] as String,
+            employeeId: row['employeeId'] as int),
+        arguments: [employeeId]);
+  }
 
   @override
   Future<List<EmployeeEntity>> findAllEmployees() async {
@@ -262,7 +276,8 @@ class _$Underemployeedao extends Underemployeedao {
                   'id': item.id,
                   'name': item.name,
                   'email': item.email,
-                  'phone': item.phone
+                  'phone': item.phone,
+                  'employeeId': item.employeeId
                 }),
         _underemployeeEntityUpdateAdapter = UpdateAdapter(
             database,
@@ -272,7 +287,8 @@ class _$Underemployeedao extends Underemployeedao {
                   'id': item.id,
                   'name': item.name,
                   'email': item.email,
-                  'phone': item.phone
+                  'phone': item.phone,
+                  'employeeId': item.employeeId
                 }),
         _underemployeeEntityDeletionAdapter = DeletionAdapter(
             database,
@@ -282,7 +298,8 @@ class _$Underemployeedao extends Underemployeedao {
                   'id': item.id,
                   'name': item.name,
                   'email': item.email,
-                  'phone': item.phone
+                  'phone': item.phone,
+                  'employeeId': item.employeeId
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -300,13 +317,28 @@ class _$Underemployeedao extends Underemployeedao {
       _underemployeeEntityDeletionAdapter;
 
   @override
+  Future<List<UnderemployeeEntity>> findUnderemployeesByEmployeeId(
+      int employeeId) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM underemployee_entity WHERE employeeId = ?1',
+        mapper: (Map<String, Object?> row) => UnderemployeeEntity(
+            id: row['id'] as int?,
+            name: row['name'] as String,
+            email: row['email'] as String,
+            phone: row['phone'] as String,
+            employeeId: row['employeeId'] as int),
+        arguments: [employeeId]);
+  }
+
+  @override
   Future<List<UnderemployeeEntity>> findAllUnderemployees() async {
     return _queryAdapter.queryList('SELECT * FROM underemployee_entity',
         mapper: (Map<String, Object?> row) => UnderemployeeEntity(
             id: row['id'] as int?,
             name: row['name'] as String,
             email: row['email'] as String,
-            phone: row['phone'] as String));
+            phone: row['phone'] as String,
+            employeeId: row['employeeId'] as int));
   }
 
   @override
@@ -316,7 +348,8 @@ class _$Underemployeedao extends Underemployeedao {
             id: row['id'] as int?,
             name: row['name'] as String,
             email: row['email'] as String,
-            phone: row['phone'] as String));
+            phone: row['phone'] as String,
+            employeeId: row['employeeId'] as int));
   }
 
   @override
@@ -330,7 +363,8 @@ class _$Underemployeedao extends Underemployeedao {
             id: row['id'] as int?,
             name: row['name'] as String,
             email: row['email'] as String,
-            phone: row['phone'] as String),
+            phone: row['phone'] as String,
+            employeeId: row['employeeId'] as int),
         arguments: [uid, password]);
   }
 
@@ -342,7 +376,8 @@ class _$Underemployeedao extends Underemployeedao {
             id: row['id'] as int?,
             name: row['name'] as String,
             email: row['email'] as String,
-            phone: row['phone'] as String),
+            phone: row['phone'] as String,
+            employeeId: row['employeeId'] as int),
         arguments: [uid]);
   }
 
