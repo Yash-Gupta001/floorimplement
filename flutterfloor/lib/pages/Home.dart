@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 
 import 'showunderemployee.dart';
-import 'login.dart'; // Ensure to import the Login screen.
+import 'login.dart'; 
 
 class Home extends StatelessWidget {
   final Insertcontroller controller =
@@ -79,11 +79,11 @@ class Home extends StatelessWidget {
       
                               SizedBox(height: 20),
       
-                              // Custom Button to view the team details
+                              // to view the team details
                               CustomButton(
                                 text: 'Get Team Details',
                                 onPressed: () {
-                                  // Now that the employee is available, navigate to the team details
+                                  // navigate to the team details
                                   Get.to(() => Showunderemployee(employee.id!));
                                 },
                               ),
