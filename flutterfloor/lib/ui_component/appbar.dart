@@ -11,7 +11,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     this.backgroundColor = Colors.lightGreen,
     this.elevation = 4.0,
-    required this.leading,  // Use bool here
+    required this.leading,  // true or false for back button iin appbar
   });
 
   @override

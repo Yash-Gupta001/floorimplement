@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../controller/updatecontroller.dart';
 import '../database/app_database.dart';
 import '../entity/underemployee_entity.dart';
 import '../ui_component/appbar.dart';
@@ -17,6 +18,9 @@ class Showunderemployee extends StatefulWidget {
 }
 
 class _ShowunderemployeeState extends State<Showunderemployee> {
+  final Updatecontroller controller =
+      Get.put(Updatecontroller(database: Get.find()));
+
   final AppDatabase database = Get.find<AppDatabase>();
 
   // to store the current future of underemployees
@@ -59,8 +63,9 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                         return Slidable(
                           endActionPane: ActionPane(
                             motion: const DrawerMotion(),
-                            extentRatio: 0.23,
+                            extentRatio: 0.38,
                             children: [
+                              // delete team member from the database
                               SlidableAction(
                                 onPressed: (context) async {
                                   // Delete underemployee from the database
@@ -75,7 +80,7 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content: Text(
-                                            '${underemployee.name} deleted')),
+                                            '${underemployee.name} Deleted')),
                                   );
                                 },
                                 backgroundColor: Colors.red,
@@ -86,6 +91,27 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 14),
                               ),
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                              // update team member data in the database
+                              SlidableAction(
+                                onPressed: (context) {
+                                  controller.showUpdateUnderemployeeDialog(
+                                    context,
+                                    underemployee,
+                                    controller.database.underemployeedao,
+                                  );
+                                },
+                                backgroundColor: Colors.lightGreenAccent,
+                                foregroundColor: Colors.white,
+                                icon: Icons.update,
+                                label: 'Update',
+                                borderRadius: BorderRadius.circular(8),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 14),
+                              ),
+
+///////////////////////////////////////////////////////////////////////////////////////////////
                             ],
                           ),
                           child: Card(

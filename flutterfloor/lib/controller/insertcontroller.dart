@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfloor/dao/underemployeedao.dart';
-import 'package:flutterfloor/database/app_database.dart';
-import 'package:flutterfloor/entity/underemployee_entity.dart';
 import 'package:get/get.dart';
+
+import '../dao/underemployeedao.dart';
+import '../database/app_database.dart';
+import '../entity/underemployee_entity.dart';
 
 class Insertcontroller extends GetxController {
   final AppDatabase database;

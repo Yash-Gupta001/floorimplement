@@ -1,6 +1,7 @@
 import 'package:flutterfloor/database/app_database.dart';
-import 'package:flutterfloor/entity/employee_entity.dart';
 import 'package:get/get.dart';
+
+import '../entity/employee_entity.dart';
 
 class Registercontroller {
   final AppDatabase database;
