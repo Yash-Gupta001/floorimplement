@@ -28,17 +28,17 @@ class Registercontroller {
     // Validate Name (Must not be empty)
     isNameValid.value = name.value.isNotEmpty;
 
-    // Validate Email
+    // to check the email
     isEmailValid.value =
         RegExp(r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email.value);
 
-    // Validate Phone
+    // to check entered length of phone number is 10 or not
     isPhoneValid.value = phone.value.isNotEmpty && phone.value.length == 10;
 
-    // Validate Username
+    // to check uid is not empty and length is greater than 6
     isUidValid.value = uid.value.isNotEmpty && uid.value.length >= 6;
 
-    // Validate Password
+    // to check password is not empty and length is greater than 6
     isPasswordValid.value =
         password.value.isNotEmpty && password.value.length >= 6;
 
@@ -64,8 +64,8 @@ class Registercontroller {
       await dao.insertEmployee(employee);
       Get.snackbar('Success', 'Employee Registered');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to register employee: $e');
-      // print('$e');
+      Get.snackbar('Error', 'userID already exists');
+      print('$e');
     }
   }
 }

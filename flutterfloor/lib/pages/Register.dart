@@ -47,7 +47,7 @@ class Register extends StatelessWidget {
                   controller: controller.phone,
                   isValid: controller.isPhoneValid,
                   keyboardType: TextInputType
-                      .phone, // This ensures numeric keyboard appears
+                      .phone, // for numeric keyboard
                   onChanged: (text) {
                     controller.phone.value = text;
                   },
@@ -69,7 +69,7 @@ class Register extends StatelessWidget {
                   controller: controller.password,
                   isValid: controller.isPasswordValid,
                   obscureText: !controller.isPasswordVisible
-                      .value, // Correct way to access the RxBool
+                      .value, 
                   onChanged: (text) {
                     controller.password.value = text;
                   },
@@ -81,7 +81,7 @@ class Register extends StatelessWidget {
                       color: Colors.grey,
                     ),
                     onPressed: () {
-                      // Toggle the visibility of the password when the icon is pressed
+                      // Toggle password visibility
                       controller.isPasswordVisible.value =
                           !controller.isPasswordVisible.value;
                     },
@@ -95,7 +95,7 @@ class Register extends StatelessWidget {
                   text: 'Register',
                   onPressed: () async {
                     if (controller.validateUser()) {
-                      // Call registerEmployee without passing id (it's auto-generated)
+                      // Call registerEmployee without passing id
                       await controller.registerEmployee();
                       // Get.snackbar('Success', 'Employee Registered');
                     } else {
@@ -119,8 +119,8 @@ class Register extends StatelessWidget {
     bool obscureText = false,
     required ValueChanged<String> onChanged,
     TextInputType keyboardType =
-        TextInputType.text, // Default to normal keyboard
-    Widget? suffixIcon, // Suffix icon to add an eye icon
+        TextInputType.text,
+    Widget? suffixIcon, 
   }) 
   {
     return Obx(() {
@@ -131,12 +131,12 @@ class Register extends StatelessWidget {
           SizedBox(height: 8),
           TextField(
             onChanged: onChanged,
-            obscureText: obscureText, // Whether to obscure the text (password)
+            obscureText: obscureText, // to Hide the password we use obscureText
             keyboardType: keyboardType,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               errorText: isValid.value ? null : 'Invalid $label',
-              suffixIcon: suffixIcon, // Add the eye icon here
+              suffixIcon: suffixIcon,
             ),
           ),
           SizedBox(height: 16),

@@ -28,7 +28,7 @@ class UnderemployeeEntity {
     required this.name,
     required this.email,
     required this.phone,
-    required this.employeeId, // Include the foreign key here
+    required this.employeeId, // Include foreign key reference
   });
 
   @override

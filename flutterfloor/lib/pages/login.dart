@@ -13,7 +13,6 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get the LoginController
     final Logincontroller logincontroller =
         Get.put(Logincontroller(database: Get.find<AppDatabase>()));
 
@@ -24,7 +23,6 @@ class Login extends StatelessWidget {
           leading: false,
         ),
         body: SingleChildScrollView(
-          //  scrolling if the screen is too small
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -32,7 +30,6 @@ class Login extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 40),
-
                 // Username (UID) field
                 TextField(
                   onChanged: (value) {
@@ -51,7 +48,7 @@ class Login extends StatelessWidget {
                   obscureText: true,
                   onChanged: (value) {
                     logincontroller.password.value =
-                        value; // Update password in controller
+                        value; 
                   },
                   decoration: InputDecoration(
                     labelText: 'Password',
@@ -91,7 +88,7 @@ class Login extends StatelessWidget {
                   onPressed: () {
                     // Navigate to the register page
                     Get.to(Register());
-                    // print('Register button pressed');
+                    print('Register button pressed');
                   },
                 ),
               ],
