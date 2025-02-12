@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../dao/underemployeedao.dart';
 import '../database/app_database.dart';
 import '../entity/underemployee_entity.dart';
@@ -7,15 +8,14 @@ import '../entity/underemployee_entity.dart';
 class Updatecontroller extends GetxController {
   final AppDatabase database;
 
-  // Observable list of underemployees
   var underemployees = <UnderemployeeEntity>[].obs;
 
   Updatecontroller({required this.database});
 
-  // Fetch underemployees by employeeId and update the observable list
+  // Fetch underemployees by employeeId
   Future<void> fetchUnderemployees(int employeeId) async {
     final List<UnderemployeeEntity> updatedList = await database.underemployeedao.findUnderemployeesByEmployeeId(employeeId);
-    underemployees.value = updatedList; // This will trigger UI updates automatically
+    underemployees.value = updatedList; 
   }
 
   // Update underemployee
@@ -25,7 +25,8 @@ class Updatecontroller extends GetxController {
       fetchUnderemployees(underemployee.employeeId); // Re-fetch the updated list
       Get.snackbar('Success', 'Underemployee updated');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update underemployee: $e');
+      Get.snackbar('Error', 'Failed to update underemployee');
+      print(e);
     }
   }
 
@@ -65,7 +66,7 @@ class Updatecontroller extends GetxController {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: Text('Cancel'),
             ),
@@ -83,10 +84,18 @@ class Updatecontroller extends GetxController {
                   );
                   // Update the underemployee in the database
                   await dao.updateUnderemployee(updatedUnderemployee);
-                  fetchUnderemployees(updatedUnderemployee.employeeId); // Re-fetch the list
-                  Get.snackbar('Success', 'Underemployee updated');
+
+//////////////////////////////////////////////////////////////////////////////////////////////            
+                  // Update the observable list
+                  final index = underemployees.indexWhere((element) => element.id == updatedUnderemployee.id);
+                  if (index != -1) {
+                    underemployees[index] = updatedUnderemployee;
+                  }
+                  Get.snackbar('Success', 'Member updated');
                   Navigator.of(context).pop();
-                } else {
+                } 
+//////////////////////////////////////////////////////////////////////////////////////////////        
+                else {
                   Get.snackbar('Error', 'Please fill in all fields');
                 }
               },

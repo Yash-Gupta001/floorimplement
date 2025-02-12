@@ -4,7 +4,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../controller/updatecontroller.dart';
 import '../database/app_database.dart';
-import '../entity/underemployee_entity.dart';
 import '../ui_component/appbar.dart';
 
 class Showunderemployee extends StatefulWidget {
@@ -23,18 +22,11 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
 
   final AppDatabase database = Get.find<AppDatabase>();
 
-  // to store the current future of underemployees
-  late Future<List<UnderemployeeEntity>> futureUnderemployees;
-
   @override
   void initState() {
     super.initState();
-    futureUnderemployees = _fetchUnderemployees();
-  }
-
-  Future<List<UnderemployeeEntity>> _fetchUnderemployees() async {
-    return await database.underemployeedao
-        .findUnderemployeesByEmployeeId(widget.employeeId);
+    // Fetch underemployees when the screen loads
+    controller.fetchUnderemployees(widget.employeeId);
   }
 
   @override
@@ -44,97 +36,82 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
         appBar: CustomAppbar(title: 'Team Members', leading: true),
         body: Column(
           children: [
-            // list of underemployees
+            // List of underemployees using Obx
             Expanded(
-              child: FutureBuilder<List<UnderemployeeEntity>>(
-                future: futureUnderemployees,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (snapshot.hasData) {
-                    var underemployees = snapshot.data;
-                    return ListView.builder(
-                      itemCount: underemployees?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        var underemployee = underemployees![index];
+              child: Obx(() {
+                if (controller.underemployees.isEmpty) {
+                  return const Center(child: Text('No underemployees found'));
+                }
+                return ListView.builder(
+                  itemCount: controller.underemployees.length,
+                  itemBuilder: (context, index) {
+                    var underemployee = controller.underemployees[index];
 
-                        return Slidable(
-                          endActionPane: ActionPane(
-                            motion: const DrawerMotion(),
-                            extentRatio: 0.38,
-                            children: [
-                              // delete team member from the database
-                              SlidableAction(
-                                onPressed: (context) async {
-                                  // Delete underemployee from the database
-                                  await database.underemployeedao
-                                      .deleteUnderemployee(underemployee);
-                                  // After deletion, re-fetch the updated data
-                                  setState(() {
-                                    futureUnderemployees =
-                                        _fetchUnderemployees();
-                                  });
-                                  // Update UI after delete
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            '${underemployee.name} Deleted')),
-                                  );
-                                },
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: 'Delete',
-                                borderRadius: BorderRadius.circular(8),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 14),
-                              ),
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                              // update team member data in the database
-                              SlidableAction(
-                                onPressed: (context) {
-                                  controller.showUpdateUnderemployeeDialog(
-                                    context,
-                                    underemployee,
-                                    controller.database.underemployeedao,
-                                  );
-                                },
-                                backgroundColor: Colors.lightGreenAccent,
-                                foregroundColor: Colors.white,
-                                icon: Icons.update,
-                                label: 'Update',
-                                borderRadius: BorderRadius.circular(8),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 14),
-                              ),
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-                            ],
+                    return Slidable(
+                      endActionPane: ActionPane(
+                        motion: const DrawerMotion(),
+                        extentRatio: 0.38,
+                        children: [
+                          // Delete team member from the database
+                          SlidableAction(
+                            onPressed: (context) async {
+                              // Delete underemployee from the database
+                              await database.underemployeedao
+                                  .deleteUnderemployee(underemployee);
+                              // Update the observable list
+                              controller.underemployees.remove(underemployee);
+                              // Show a snackbar
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text(
+                                        '${underemployee.name} Deleted')),
+                              );
+                            },
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'Delete',
+                            borderRadius: BorderRadius.circular(8),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 14),
                           ),
-                          child: Card(
-                            margin: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: ListTile(
-                              title: Text(underemployee.name),
-                              subtitle: Text(
-                                'Employee Email: ${underemployee.email}\n'
-                                'Employee Phone number: ${underemployee.phone}',
-                              ),
-                            ),
+
+                          // Update team member data in the database
+                          SlidableAction(
+                            onPressed: (context) {
+                              controller.showUpdateUnderemployeeDialog(
+                                context,
+                                underemployee,
+                                controller.database.underemployeedao,
+                              );
+                            },
+                            backgroundColor: Colors.lightGreenAccent,
+                            foregroundColor: Colors.white,
+                            icon: Icons.update,
+                            label: 'Update',
+                            borderRadius: BorderRadius.circular(8),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 14),
                           ),
-                        );
-                      },
+                        ],
+                      ),
+                      child: Card(
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ListTile(
+                          title: Text(underemployee.name),
+                          subtitle: Text(
+                            'Employee Email: ${underemployee.email}\n'
+                            'Employee Phone number: ${underemployee.phone}',
+                          ),
+                        ),
+                      ),
                     );
-                  } else {
-                    return const Center(child: Text('No underemployees found'));
-                  }
-                },
-              ),
+                  },
+                );
+              }),
             ),
 
-            //for deleting all members
+            // For deleting all members
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
@@ -157,9 +134,8 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                           onPressed: () async {
                             await database.underemployeedao
                                 .deleteAllUnderemployees();
-                            setState(() {
-                              futureUnderemployees = _fetchUnderemployees();
-                            });
+                            // Clear the observable list
+                            controller.underemployees.clear();
                             Get.back();
                           },
                           child: const Text('Delete'),
