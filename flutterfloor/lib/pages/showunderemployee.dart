@@ -33,7 +33,7 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: CustomAppbar(title: 'Team Members', leading: true),
+        appBar: CustomAppbar(title: 'Employee Data', leading: true),
         body: Column(
           children: [
             // List of underemployees using Obx
@@ -52,7 +52,7 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                         motion: const DrawerMotion(),
                         extentRatio: 0.38,
                         children: [
-                          // Delete team member from the database
+                          // Delete slidable button
                           SlidableAction(
                             onPressed: (context) async {
                               // Delete underemployee from the database
@@ -75,7 +75,9 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                             padding: const EdgeInsets.symmetric(horizontal: 14),
                           ),
 
-                          // Update team member data in the database
+                          
+
+                          // Update Employee data in the database
                           SlidableAction(
                             onPressed: (context) {
                               controller.showUpdateUnderemployeeDialog(
@@ -94,13 +96,72 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                         ],
                       ),
                       child: Card(
-                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0)),
+                        elevation: 5.0,
                         child: ListTile(
-                          title: Text(underemployee.name),
-                          subtitle: Text(
-                            'Employee Email: ${underemployee.email}\n'
-                            'Employee Phone number: ${underemployee.phone}\n'
-                            'Employee Designtion: ${underemployee.designation}',
+                          contentPadding: EdgeInsets.all(16.0),
+                          title: Text(
+                            underemployee.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                              fontSize: 24,
+                              letterSpacing: 1.2,
+                            ),
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                  child: underemployee.photo != null
+                                      ? ClipRRect(
+                                          child: Image.memory(
+                                            underemployee.photo!,
+                                            height: 100,
+                                            width: 100,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        )
+                                      : Icon(
+                                          Icons.person_2_sharp,
+                                          size: 100,
+                                          color: Colors.grey.shade400,
+                                        ),
+                                ),
+                                SizedBox(height: 12),
+                                Text(
+                                  'Employee Email: ${underemployee.email}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Employee Phone: ${underemployee.phone}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Designation: ${underemployee.designation}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.blueGrey,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -110,16 +171,16 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
               }),
             ),
 
-            // For deleting all members
+            // For deleting all Employees
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
                   Get.dialog(
                     AlertDialog(
-                      title: const Text('Delete All Members'),
+                      title: const Text('Delete All Employees'),
                       content: const Text(
-                          'Are you sure you want to delete all members?'),
+                          'Are you sure you want to delete all employees?'),
                       actions: [
                         // Cancel button
                         TextButton(
@@ -133,7 +194,6 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                           onPressed: () async {
                             await database.underemployeedao
                                 .deleteAllUnderemployees();
-                            // Clear the observable list
                             controller.underemployees.clear();
                             Get.back();
                           },
@@ -153,7 +213,7 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                   side: const BorderSide(color: Colors.white, width: 2),
                 ),
                 child: Text(
-                  'Delete All Members',
+                  'Delete All Employees',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

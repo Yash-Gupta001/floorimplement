@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'dart:typed_data';
 
 import '../dao/underemployeedao.dart';
 import '../database/app_database.dart';
@@ -16,6 +19,9 @@ class Insertcontroller extends GetxController {
   RxString phone = ''.obs;
   RxString selectedDesignation = ''.obs;
 
+  // Store the image as bytes 
+  Rx<Uint8List?> photo = Rx<Uint8List?>(null);
+
   var isFormValid = true.obs;
 
   // Validation for the underemployee fields
@@ -23,7 +29,7 @@ class Insertcontroller extends GetxController {
     isFormValid.value = name.value.isNotEmpty &&
         email.value.isNotEmpty &&
         phone.value.isNotEmpty &&
-        selectedDesignation.value.isNotEmpty; // Ensure designation is selected
+        selectedDesignation.value.isNotEmpty;
     return isFormValid.value;
   }
 
@@ -35,7 +41,8 @@ class Insertcontroller extends GetxController {
         email: email.value,
         phone: phone.value,
         employeeId: employeeId, // Dynamically set the employeeId
-        designation: selectedDesignation.value, // Add designation
+        designation: selectedDesignation.value,
+        photo: photo.value, // Store photo as bytes (Uint8List)
       );
 
       try {
@@ -50,48 +57,52 @@ class Insertcontroller extends GetxController {
     }
   }
 
-  // Function to show the dialog for adding a new underemployee
+  // Function to show the dialog for adding a new employee
   void showAddUnderemployeeDialog(
-      BuildContext context, Underemployeedao dao, int employeeId) {
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController phoneController = TextEditingController();
+  BuildContext context, Underemployeedao dao, int employeeId) {
+  
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
 
-    // List of possible designations
-    final List<String> designations = [
-      'Manager',
-      'Developer',
-      'Deployement',
-      'Tester',
-      'HR'
-    ];
+  // List of designations
+  final List<String> designations = [
+    'Manager',
+    'Developer',
+    'Deployment',
+    'Tester',
+    'HR'
+  ];
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Center(
-          child: SingleChildScrollView(
-            child: AlertDialog(
-              title: Text('Add a team member'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(labelText: 'Name'),
-                  ),
-                  TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(labelText: 'Email'),
-                  ),
-                  TextField(
-                    controller: phoneController,
-                    decoration: InputDecoration(labelText: 'Phone'),
-                    keyboardType: TextInputType.phone,
-                  ),
+  final ImagePicker _picker = ImagePicker();
 
-                  // DropdownButton for designation
-                  DropdownButton<String>(
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Center(
+        child: SingleChildScrollView(
+          child: AlertDialog(
+            title: Text('Add a team member'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  controller: nameController,
+                  decoration: InputDecoration(labelText: 'Name'),
+                ),
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(labelText: 'Email'),
+                ),
+                TextField(
+                  controller: phoneController,
+                  decoration: InputDecoration(labelText: 'Phone'),
+                  keyboardType: TextInputType.phone,
+                ),
+
+                // DropdownButton for designation
+                Obx(() {
+                  return DropdownButton<String>(
                     value: selectedDesignation.value.isNotEmpty
                         ? selectedDesignation.value
                         : null,
@@ -107,46 +118,67 @@ class Insertcontroller extends GetxController {
                         child: Text(designation),
                       );
                     }).toList(),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    // Validate form data before adding underemployee
-                    if (nameController.text.isNotEmpty &&
-                        emailController.text.isNotEmpty &&
-                        phoneController.text.isNotEmpty &&
-                        selectedDesignation.value.isNotEmpty) {
-                      var underemployee = UnderemployeeEntity(
-                        name: nameController.text,
-                        email: emailController.text,
-                        phone: phoneController.text,
-                        employeeId:
-                            employeeId, // Pass the logged-in employee's ID
-                        designation: selectedDesignation
-                            .value, // Pass the selected designation
-                      );
-                      await dao.insertUnderemployee(underemployee);
-                      Get.snackbar('Success', 'Member added');
-                      Navigator.of(context).pop(); // Close the dialog
-                    } else {
-                      Get.snackbar('Error', 'Please fill in all fields');
-                    }
-                  },
-                  child: Text('Add Team Member'),
+                  );
+                }),
+
+                // to select a photo
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        final XFile? pickedFile = await _picker.pickImage(
+                            source: ImageSource.gallery);
+
+                        if (pickedFile != null) {
+                          // Convert the picked image to bytes (Uint8List)
+                          final imageFile = File(pickedFile.path);
+                          final bytes = await imageFile.readAsBytes();
+                          photo.value = bytes; 
+                        }
+                      },
+                      child: Center(child: Text('Pick a Photo')),
+                    ),
+                  ],
                 ),
               ],
             ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  // Validate form data before adding underemployee
+                  if (nameController.text.isNotEmpty &&
+                      emailController.text.isNotEmpty &&
+                      phoneController.text.isNotEmpty &&
+                      selectedDesignation.value.isNotEmpty) {
+                    var underemployee = UnderemployeeEntity(
+                      name: nameController.text,
+                      email: emailController.text,
+                      phone: phoneController.text,
+                      employeeId: employeeId, // Pass the logged-in employee's ID
+                      designation: selectedDesignation.value,
+                      photo: photo.value,
+                    );
+                    await dao.insertUnderemployee(underemployee);
+                    Get.snackbar('Success', 'Member added');
+                    Navigator.of(context).pop();
+                  } else {
+                    Get.snackbar('Error', 'Please fill in all fields');
+                  }
+                },
+                child: Text('Add Team Member'),
+              ),
+            ],
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
+
 }

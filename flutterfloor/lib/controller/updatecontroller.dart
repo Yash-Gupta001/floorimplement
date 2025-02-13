@@ -1,5 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../dao/underemployeedao.dart';
 import '../database/app_database.dart';
@@ -8,6 +12,7 @@ import '../entity/underemployee_entity.dart';
 class Updatecontroller extends GetxController {
   final AppDatabase database;
   RxString selectedDesignation = ''.obs;
+  Rx<Uint8List?> selectedImage = Rx<Uint8List?>(null); // Store the selected image
 
   var underemployees = <UnderemployeeEntity>[].obs;
 
@@ -26,7 +31,7 @@ class Updatecontroller extends GetxController {
     try {
       await database.underemployeedao.updateUnderemployee(underemployee);
       fetchUnderemployees(underemployee.employeeId);
-      Get.snackbar('Success', 'employee updated');
+      Get.snackbar('Success', 'Employee updated');
     } catch (e) {
       Get.snackbar('Error', 'Failed to update employee');
       print(e);
@@ -50,13 +55,15 @@ class Updatecontroller extends GetxController {
     final List<String> designations = [
       'Manager',
       'Developer',
-      'Deployement',
+      'Deployment',
       'Tester',
       'HR'
     ];
 
     // Set the selected designation to the current underemployee designation
     selectedDesignation.value = underemployee.designation;
+
+    final ImagePicker _picker = ImagePicker();
 
     showDialog(
       context: context,
@@ -81,24 +88,62 @@ class Updatecontroller extends GetxController {
                 keyboardType: TextInputType.phone,
               ),
 
-              // DropdownButton for designation
-              DropdownButton<String>(
-                value: selectedDesignation.value.isNotEmpty
-                    ? selectedDesignation.value
-                    : null,
-                hint: Text('Select Designation'),
-                onChanged: (String? newDesignation) {
-                  if (newDesignation != null) {
-                    selectedDesignation.value =
-                        newDesignation; // Update selectedDesignation
-                  }
-                },
-                items: designations.map((String designation) {
-                  return DropdownMenuItem<String>(
-                    value: designation,
-                    child: Text(designation),
-                  );
-                }).toList(),
+              // Reactive DropdownButton for designation
+              Obx(() {
+                return DropdownButton<String>(
+                  value: selectedDesignation.value.isNotEmpty
+                      ? selectedDesignation.value
+                      : null,
+                  hint: Text('Select Designation'),
+                  onChanged: (String? newDesignation) {
+                    if (newDesignation != null) {
+                      selectedDesignation.value = newDesignation;
+                    }
+                  },
+                  items: designations.map((String designation) {
+                    return DropdownMenuItem<String>(
+                      value: designation,
+                      child: Text(designation),
+                    );
+                  }).toList(),
+                );
+              }),
+
+              // Show the selected image or a default icon
+              selectedImage.value != null
+                  ? Image.memory(
+                      selectedImage.value!,
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.cover,
+                    )
+                  : Icon(
+                      Icons.person_2_sharp,
+                      size: 100,
+                      color: Colors.grey,
+                    ),
+
+              // Button to pick a new photo
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      // to pick image from the gallery
+                      final XFile? pickedFile = await _picker.pickImage(
+                          source: ImageSource.gallery);
+
+                      if (pickedFile != null) {
+                        // Convert the picked image to bytes
+                        final imageFile = File(pickedFile.path);
+                        final bytes = await imageFile.readAsBytes();
+                        selectedImage.value = bytes;
+                      }
+                    },
+                    child: Center(
+                      child: Text('Pick a Photo'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -121,9 +166,10 @@ class Updatecontroller extends GetxController {
                     email: emailController.text,
                     phone: phoneController.text,
                     employeeId: underemployee.employeeId,
-                    designation: selectedDesignation
-                        .value, // Use selected designation here
+                    designation: selectedDesignation.value,
+                    photo: selectedImage.value, // Save the photo as bytes
                   );
+
                   // Update the underemployee in the database
                   await dao.updateUnderemployee(updatedUnderemployee);
 

@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
                     } else if (snapshot.hasData) {
                       var employee = snapshot.data;
                       if (employee != null) {
-                        // Employee data found, you can now safely access `employee`
+                        // here the current login employee data is shown
                         return Center(
                           child: Column(
                             children: [
@@ -59,7 +59,7 @@ class Home extends StatelessWidget {
                                   style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.lightGreenAccent)),
+                                      color: Colors.deepPurple)),
                               SizedBox(height: 8),
                               Text('Employee ID: ${employee.id}',
                                   style: TextStyle(

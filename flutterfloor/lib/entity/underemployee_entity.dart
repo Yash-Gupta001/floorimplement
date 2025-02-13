@@ -1,5 +1,5 @@
+import 'dart:typed_data';
 import 'package:floor/floor.dart';
-
 import 'employee_entity.dart';
 
 @Entity(
@@ -19,10 +19,14 @@ class UnderemployeeEntity {
   final String name;
   final String email;
   final String phone;
-  final String designation; // New field added for designation
+  final String designation;
+  final Uint8List? photo; // binary data to store a image
+  
 
   @ColumnInfo(name: 'employeeId')
   final int employeeId; // Foreign key reference to EmployeeEntity
+
+
 
   UnderemployeeEntity({
     this.id,
@@ -30,7 +34,8 @@ class UnderemployeeEntity {
     required this.email,
     required this.phone,
     required this.employeeId,
-    required this.designation, // Include designation
+    required this.designation,
+    required this.photo,  // the photo is optional 
   });
 
   @override
