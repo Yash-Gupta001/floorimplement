@@ -63,8 +63,8 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                               // Show a snackbar
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                    content: Text(
-                                        '${underemployee.name} Deleted')),
+                                    content:
+                                        Text('${underemployee.name} Deleted')),
                               );
                             },
                             backgroundColor: Colors.red,
@@ -72,8 +72,7 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                             icon: Icons.delete,
                             label: 'Delete',
                             borderRadius: BorderRadius.circular(8),
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 14),
+                            padding: const EdgeInsets.symmetric(horizontal: 14),
                           ),
 
                           // Update team member data in the database
@@ -90,8 +89,7 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                             icon: Icons.update,
                             label: 'Update',
                             borderRadius: BorderRadius.circular(8),
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 14),
+                            padding: const EdgeInsets.symmetric(horizontal: 14),
                           ),
                         ],
                       ),
@@ -101,7 +99,8 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                           title: Text(underemployee.name),
                           subtitle: Text(
                             'Employee Email: ${underemployee.email}\n'
-                            'Employee Phone number: ${underemployee.phone}',
+                            'Employee Phone number: ${underemployee.phone}\n'
+                            'Employee Designtion: ${underemployee.designation}',
                           ),
                         ),
                       ),

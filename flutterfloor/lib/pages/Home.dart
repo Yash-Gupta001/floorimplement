@@ -79,9 +79,9 @@ class Home extends StatelessWidget {
 
                               SizedBox(height: 20),
 
-                              // to view the team details
+                              // to view the Employee details
                               CustomButton(
-                                text: 'Get Team Details',
+                                text: 'Get Employee Details',
                                 onPressed: () {
                                   // navigate to the team details
                                   Get.to(() => Showunderemployee(employee.id!));
@@ -89,15 +89,16 @@ class Home extends StatelessWidget {
                               ),
 
                               SizedBox(height: 13),
-
+///////////////////////////////////////////////////////////////////////////////////////
                               // Custom Button to add a team member
                               CustomButton(
-                                text: 'Add Team Member',
+                                text: 'Add Employee',
                                 onPressed: () {
                                   controller.showAddUnderemployeeDialog(
                                       context, underdao, employee.id!);
                                 },
                               ),
+////////////////////////////////////////////////////////////////////////////////////////
                               
                             ],
                           ),

@@ -98,7 +98,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `underemployee_entity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `phone` TEXT NOT NULL, `employeeId` INTEGER NOT NULL, FOREIGN KEY (`employeeId`) REFERENCES `employee_entity` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
+            'CREATE TABLE IF NOT EXISTS `underemployee_entity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `phone` TEXT NOT NULL, `designation` TEXT NOT NULL, `employeeId` INTEGER NOT NULL, FOREIGN KEY (`employeeId`) REFERENCES `employee_entity` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `employee_entity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `phone` TEXT NOT NULL, `uid` TEXT NOT NULL, `password` TEXT NOT NULL)');
 
@@ -183,7 +183,8 @@ class _$EmployeeDao extends EmployeeDao {
             name: row['name'] as String,
             email: row['email'] as String,
             phone: row['phone'] as String,
-            employeeId: row['employeeId'] as int),
+            employeeId: row['employeeId'] as int,
+            designation: row['designation'] as String),
         arguments: [employeeId]);
   }
 
@@ -277,6 +278,7 @@ class _$Underemployeedao extends Underemployeedao {
                   'name': item.name,
                   'email': item.email,
                   'phone': item.phone,
+                  'designation': item.designation,
                   'employeeId': item.employeeId
                 }),
         _underemployeeEntityUpdateAdapter = UpdateAdapter(
@@ -288,6 +290,7 @@ class _$Underemployeedao extends Underemployeedao {
                   'name': item.name,
                   'email': item.email,
                   'phone': item.phone,
+                  'designation': item.designation,
                   'employeeId': item.employeeId
                 }),
         _underemployeeEntityDeletionAdapter = DeletionAdapter(
@@ -299,6 +302,7 @@ class _$Underemployeedao extends Underemployeedao {
                   'name': item.name,
                   'email': item.email,
                   'phone': item.phone,
+                  'designation': item.designation,
                   'employeeId': item.employeeId
                 });
 
@@ -326,7 +330,8 @@ class _$Underemployeedao extends Underemployeedao {
             name: row['name'] as String,
             email: row['email'] as String,
             phone: row['phone'] as String,
-            employeeId: row['employeeId'] as int),
+            employeeId: row['employeeId'] as int,
+            designation: row['designation'] as String),
         arguments: [employeeId]);
   }
 
@@ -338,7 +343,8 @@ class _$Underemployeedao extends Underemployeedao {
             name: row['name'] as String,
             email: row['email'] as String,
             phone: row['phone'] as String,
-            employeeId: row['employeeId'] as int));
+            employeeId: row['employeeId'] as int,
+            designation: row['designation'] as String));
   }
 
   @override
@@ -349,7 +355,8 @@ class _$Underemployeedao extends Underemployeedao {
             name: row['name'] as String,
             email: row['email'] as String,
             phone: row['phone'] as String,
-            employeeId: row['employeeId'] as int));
+            employeeId: row['employeeId'] as int,
+            designation: row['designation'] as String));
   }
 
   @override
@@ -364,7 +371,8 @@ class _$Underemployeedao extends Underemployeedao {
             name: row['name'] as String,
             email: row['email'] as String,
             phone: row['phone'] as String,
-            employeeId: row['employeeId'] as int),
+            employeeId: row['employeeId'] as int,
+            designation: row['designation'] as String),
         arguments: [uid, password]);
   }
 
@@ -377,7 +385,8 @@ class _$Underemployeedao extends Underemployeedao {
             name: row['name'] as String,
             email: row['email'] as String,
             phone: row['phone'] as String,
-            employeeId: row['employeeId'] as int),
+            employeeId: row['employeeId'] as int,
+            designation: row['designation'] as String),
         arguments: [uid]);
   }
 

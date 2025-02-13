@@ -13,7 +13,7 @@ class Registercontroller {
   RxString phone = "".obs;
   RxString uid = "".obs; // username
   RxString password = "".obs;
-
+  
   var isNameValid = true.obs;
   var isEmailValid = true.obs;
   var isPhoneValid = true.obs;
@@ -21,7 +21,7 @@ class Registercontroller {
   var isPasswordValid = true.obs;
 
   // RxBool for password visibility
-  var isPasswordVisible = false.obs; // Initially password is hidden
+  var isPasswordVisible = false.obs;
 
   // Validate the user input fields
   bool validateUser() {
