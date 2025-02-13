@@ -9,7 +9,7 @@ import '../dao/underemployeedao.dart';
 import '../entity/employee_entity.dart';
 import '../entity/underemployee_entity.dart';
 
-part 'app_database.g.dart';  
+part 'app_database.g.dart';
 
 @Database(version: 1, entities: [UnderemployeeEntity,EmployeeEntity])
 abstract class AppDatabase extends FloorDatabase {

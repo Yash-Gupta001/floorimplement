@@ -69,7 +69,7 @@ class Updatecontroller extends GetxController {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Update Member Information'),
+          title: Text('Update Employee Information'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -108,42 +108,31 @@ class Updatecontroller extends GetxController {
                   }).toList(),
                 );
               }),
-
-              // Show the selected image or a default icon
-              selectedImage.value != null
-                  ? Image.memory(
-                      selectedImage.value!,
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.cover,
-                    )
-                  : Icon(
-                      Icons.person_2_sharp,
-                      size: 100,
-                      color: Colors.grey,
-                    ),
-
               // Button to pick a new photo
-              Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      // to pick image from the gallery
-                      final XFile? pickedFile = await _picker.pickImage(
-                          source: ImageSource.gallery);
-
-                      if (pickedFile != null) {
-                        // Convert the picked image to bytes
-                        final imageFile = File(pickedFile.path);
-                        final bytes = await imageFile.readAsBytes();
-                        selectedImage.value = bytes;
-                      }
-                    },
-                    child: Center(
-                      child: Text('Pick a Photo'),
+              Center(
+                child: Row(
+                  children: [
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          // to pick image from the gallery
+                          final XFile? pickedFile = await _picker.pickImage(
+                              source: ImageSource.gallery);
+                      
+                          if (pickedFile != null) {
+                            // Convert the picked image to bytes
+                            final imageFile = File(pickedFile.path);
+                            final bytes = await imageFile.readAsBytes();
+                            selectedImage.value = bytes;
+                          }
+                        },
+                        child: Center(
+                          child: Text('employee photo'),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -186,7 +175,7 @@ class Updatecontroller extends GetxController {
                   Get.snackbar('Error', 'Please fill in all fields');
                 }
               },
-              child: Text('Update Member'),
+              child: Text('Update Employee'),
             ),
           ],
         );

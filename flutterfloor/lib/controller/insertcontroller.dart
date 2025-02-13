@@ -42,7 +42,7 @@ class Insertcontroller extends GetxController {
         phone: phone.value,
         employeeId: employeeId, // Dynamically set the employeeId
         designation: selectedDesignation.value,
-        photo: photo.value, // Store photo as bytes (Uint8List)
+        photo: photo.value,
       );
 
       try {
@@ -82,7 +82,7 @@ class Insertcontroller extends GetxController {
       return Center(
         child: SingleChildScrollView(
           child: AlertDialog(
-            title: Text('Add a team member'),
+            title: Text('Add Employee'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -124,19 +124,21 @@ class Insertcontroller extends GetxController {
                 // to select a photo
                 Row(
                   children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        final XFile? pickedFile = await _picker.pickImage(
-                            source: ImageSource.gallery);
-
-                        if (pickedFile != null) {
-                          // Convert the picked image to bytes (Uint8List)
-                          final imageFile = File(pickedFile.path);
-                          final bytes = await imageFile.readAsBytes();
-                          photo.value = bytes; 
-                        }
-                      },
-                      child: Center(child: Text('Pick a Photo')),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final XFile? pickedFile = await _picker.pickImage(
+                              source: ImageSource.gallery);
+                      
+                          if (pickedFile != null) {
+                            // Convert the picked image to bytes (Uint8List)
+                            final imageFile = File(pickedFile.path);
+                            final bytes = await imageFile.readAsBytes();
+                            photo.value = bytes; 
+                          }
+                        },
+                        child: Center(child: Text('employee photo')),
+                      ),
                     ),
                   ],
                 ),
@@ -165,13 +167,13 @@ class Insertcontroller extends GetxController {
                       photo: photo.value,
                     );
                     await dao.insertUnderemployee(underemployee);
-                    Get.snackbar('Success', 'Member added');
+                    Get.snackbar('Success', 'Employee added');
                     Navigator.of(context).pop();
                   } else {
                     Get.snackbar('Error', 'Please fill in all fields');
                   }
                 },
-                child: Text('Add Team Member'),
+                child: Text('Add Employee'),
               ),
             ],
           ),
@@ -180,5 +182,4 @@ class Insertcontroller extends GetxController {
     },
   );
 }
-
 }

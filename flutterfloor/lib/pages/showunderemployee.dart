@@ -210,7 +210,6 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                     borderRadius: BorderRadius.circular(25),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 15),
-                  side: const BorderSide(color: Colors.white, width: 2),
                 ),
                 child: Text(
                   'Delete All Employees',

@@ -35,7 +35,7 @@ class UnderemployeeEntity {
     required this.phone,
     required this.employeeId,
     required this.designation,
-    required this.photo,  // the photo is optional 
+    required this.photo, 
   });
 
   @override
