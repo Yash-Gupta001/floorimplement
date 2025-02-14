@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-
 import '../controller/insertcontroller.dart';
 import '../controller/logincontroller.dart';
 import '../database/app_database.dart';
@@ -10,6 +9,7 @@ import '../ui_component/appbar.dart';
 import '../ui_component/button.dart';
 import 'showunderemployee.dart';
 import 'login.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Home extends StatelessWidget {
   final Insertcontroller controller =
@@ -38,94 +38,95 @@ class Home extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 20),
 
-                // Using FutureBuilder to fetch employee data
-                FutureBuilder<EmployeeEntity?>(
-                  future: dao.findEmployeeByUid(logincontroller.uid.value),
+                // Check if UID exists, then fetch user data
+                FutureBuilder<String?>(
+                  future: _getUidFromSecureStorage(), // Get UID from secure storage
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return CircularProgressIndicator();
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
-                    } else if (snapshot.hasData) {
-                      var employee = snapshot.data;
-                      if (employee != null) {
-                        // here the current login employee data is shown
-                        return Center(
-                          child: Column(
-                            children: [
-                              Text('Employee Details\n',
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.deepPurple)),
-                              SizedBox(height: 8),
-                              Text('Employee ID: ${employee.id}',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[700])),
-                              SizedBox(height: 4),
-                              Text('Employee Name: ${employee.name}',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[700])),
-                              SizedBox(height: 4),
-                              Text('Employee Email: ${employee.email}',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[700])),
-                              SizedBox(height: 4),
-                              Text('Employee Phone: ${employee.phone}',
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[700])),
+                    } else if (snapshot.hasData && snapshot.data != null) {
+                      // If UID is available, fetch employee details
+                      final uid = snapshot.data!;
+                      return FutureBuilder<EmployeeEntity?>(
+                        future: dao.findEmployeeByUid(uid),
+                        builder: (context, employeeSnapshot) {
+                          if (employeeSnapshot.connectionState == ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (employeeSnapshot.hasError) {
+                            return Text('Error: ${employeeSnapshot.error}');
+                          } else if (employeeSnapshot.hasData && employeeSnapshot.data != null) {
+                            var employee = employeeSnapshot.data;
+                            return Center(
+                              child: Column(
+                                children: [
+                                  Text('Employee Details\n',
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.deepPurple)),
+                                  SizedBox(height: 8),
+                                  Text('Employee ID: ${employee?.id}',
+                                      style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                                  SizedBox(height: 4),
+                                  Text('Employee Name: ${employee?.name}',
+                                      style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                                  SizedBox(height: 4),
+                                  Text('Employee Email: ${employee?.email}',
+                                      style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                                  SizedBox(height: 4),
+                                  Text('Employee Phone: ${employee?.phone}',
+                                      style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                                  SizedBox(height: 20),
 
-                              SizedBox(height: 20),
+                                  CustomButton(
+                                    text: 'Get Employee Details',
+                                    onPressed: () {
+                                      // navigate to the employee details
+                                      Get.to(() => Showunderemployee(employee!.id!));
+                                    },
+                                  ),
+                                  SizedBox(height: 13),
 
-                              // to view the Employee details
-                              CustomButton(
-                                text: 'Get Employee Details',
-                                onPressed: () {
-                                  // navigate to the team details
-                                  Get.to(() => Showunderemployee(employee.id!));
-                                },
+                                  //Button to add a employee
+                                  CustomButton(
+                                    text: 'Add Employee',
+                                    onPressed: () {
+                                      controller.showAddUnderemployeeDialog(
+                                          context, underdao, employee!.id!);
+                                    },
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 13),
-///////////////////////////////////////////////////////////////////////////////////////
-                              //Button to add a member
-                              CustomButton(
-                                text: 'Add Employee',
-                                onPressed: () {
-                                  controller.showAddUnderemployeeDialog(
-                                      context, underdao, employee.id!);
-                                },
+                            );
+                          } else {
+                            return Center(
+                              child: Text(
+                                'No employee found',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: 'Schyler'
+                                ),
                               ),
-////////////////////////////////////////////////////////////////////////////////////////
-                              
-                            ],
-                          ),
-                        );
-                      } else {
-                        return Center(
-                          child: Text(
-                            'No employee found',
-                            style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.red,
-                            fontWeight: FontWeight.w900,
-                            fontFamily: 'Schyler'
-                          ),
-                            ));
-                      }
-                    } 
-                    else {
+                            );
+                          }
+                        },
+                      );
+                    } else {
                       return Center(
                         child: Text(
-                          'No data available !',
+                          'No data available!',
                           style: TextStyle(
                             fontSize: 30,
                             color: Colors.red,
                             fontWeight: FontWeight.w900,
                             fontFamily: 'Schyler'
                           ),
-                          ),
+                        ),
                       );
                     }
                   },
@@ -160,7 +161,6 @@ class Home extends StatelessWidget {
                 ),
               ],
             ));
-            //Get.offAll(() => Login());
           },
           backgroundColor: Colors.red,
           shape: RoundedRectangleBorder(
@@ -168,8 +168,6 @@ class Home extends StatelessWidget {
           ),
           elevation: 10,
           tooltip: 'Logout',
-          // ignore: deprecated_member_use
-          splashColor: Colors.white.withOpacity(0.3),
           icon: Icon(
             Icons.logout,
             color: Colors.white,
@@ -186,5 +184,11 @@ class Home extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Fetch UID from secure storage
+  Future<String?> _getUidFromSecureStorage() async {
+    final FlutterSecureStorage storage = FlutterSecureStorage();
+    return await storage.read(key: 'uid');
   }
 }
