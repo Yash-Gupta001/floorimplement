@@ -125,6 +125,9 @@ class Insertcontroller extends GetxController {
                 Row(
                   children: [
                     Center(
+
+
+
                       child: ElevatedButton(
                         onPressed: () async {
                           final XFile? pickedFile = await _picker.pickImage(
@@ -139,6 +142,11 @@ class Insertcontroller extends GetxController {
                         },
                         child: Center(child: Text('employee photo')),
                       ),
+
+
+
+
+
                     ),
                   ],
                 ),
@@ -183,3 +191,47 @@ class Insertcontroller extends GetxController {
   );
 }
 }
+
+
+/*
+
+
+ElevatedButton(
+  onPressed: () async {
+    // Show a dialog to select camera or gallery
+    final source = await showDialog<ImageSource>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Image Source'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text('Gallery'),
+                onTap: () => Navigator.of(context).pop(ImageSource.gallery),
+              ),
+              ListTile(
+                title: Text('Camera'),
+                onTap: () => Navigator.of(context).pop(ImageSource.camera),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (source != null) {
+      final XFile? pickedFile = await _picker.pickImage(source: source);
+
+      if (pickedFile != null) {
+        // Convert the picked image to bytes (Uint8List)
+        final imageFile = File(pickedFile.path);
+        final bytes = await imageFile.readAsBytes();
+        photo.value = bytes; 
+      }
+    }
+  },
+  child: Center(child: Text('Employee Photo')),
+)
+*/

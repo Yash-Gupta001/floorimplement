@@ -95,7 +95,6 @@ class Register extends StatelessWidget {
                   text: 'Register',
                   onPressed: () async {
                     if (controller.validateUser()) {
-                      // Call registerEmployee without passing id
                       await controller.registerEmployee();
                       // Get.snackbar('Success', 'Employee Registered');
                     } else {

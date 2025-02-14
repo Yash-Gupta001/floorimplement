@@ -90,7 +90,7 @@ class Home extends StatelessWidget {
 
                               SizedBox(height: 13),
 ///////////////////////////////////////////////////////////////////////////////////////
-                              // Custom Button to add a team member
+                              //Button to add a member
                               CustomButton(
                                 text: 'Add Employee',
                                 onPressed: () {
