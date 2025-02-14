@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import '../controller/insertcontroller.dart';
 import '../controller/logincontroller.dart';
 import '../database/app_database.dart';
@@ -9,7 +11,6 @@ import '../ui_component/appbar.dart';
 import '../ui_component/button.dart';
 import 'showunderemployee.dart';
 import 'login.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Home extends StatelessWidget {
   final Insertcontroller controller =
@@ -38,10 +39,9 @@ class Home extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-
                 // Check if UID exists, then fetch user data
                 FutureBuilder<String?>(
-                  future: _getUidFromSecureStorage(), // Get UID from secure storage
+                  future: _getUidFromSecureStorage(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return CircularProgressIndicator();
@@ -53,11 +53,13 @@ class Home extends StatelessWidget {
                       return FutureBuilder<EmployeeEntity?>(
                         future: dao.findEmployeeByUid(uid),
                         builder: (context, employeeSnapshot) {
-                          if (employeeSnapshot.connectionState == ConnectionState.waiting) {
+                          if (employeeSnapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return CircularProgressIndicator();
                           } else if (employeeSnapshot.hasError) {
                             return Text('Error: ${employeeSnapshot.error}');
-                          } else if (employeeSnapshot.hasData && employeeSnapshot.data != null) {
+                          } else if (employeeSnapshot.hasData &&
+                              employeeSnapshot.data != null) {
                             var employee = employeeSnapshot.data;
                             return Center(
                               child: Column(
@@ -69,28 +71,34 @@ class Home extends StatelessWidget {
                                           color: Colors.deepPurple)),
                                   SizedBox(height: 8),
                                   Text('Employee ID: ${employee?.id}',
-                                      style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[700])),
                                   SizedBox(height: 4),
                                   Text('Employee Name: ${employee?.name}',
-                                      style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[700])),
                                   SizedBox(height: 4),
                                   Text('Employee Email: ${employee?.email}',
-                                      style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[700])),
                                   SizedBox(height: 4),
                                   Text('Employee Phone: ${employee?.phone}',
-                                      style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[700])),
                                   SizedBox(height: 20),
-
                                   CustomButton(
                                     text: 'Get Employee Details',
                                     onPressed: () {
                                       // navigate to the employee details
-                                      Get.to(() => Showunderemployee(employee!.id!));
+                                      Get.to(() =>
+                                          Showunderemployee(employee!.id!));
                                     },
                                   ),
                                   SizedBox(height: 13),
-
-                                  //Button to add a employee
                                   CustomButton(
                                     text: 'Add Employee',
                                     onPressed: () {
@@ -106,11 +114,10 @@ class Home extends StatelessWidget {
                               child: Text(
                                 'No employee found',
                                 style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w900,
-                                  fontFamily: 'Schyler'
-                                ),
+                                    fontSize: 30,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: 'Schyler'),
                               ),
                             );
                           }
@@ -121,11 +128,10 @@ class Home extends StatelessWidget {
                         child: Text(
                           'No data available!',
                           style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.red,
-                            fontWeight: FontWeight.w900,
-                            fontFamily: 'Schyler'
-                          ),
+                              fontSize: 30,
+                              color: Colors.red,
+                              fontWeight: FontWeight.w900,
+                              fontFamily: 'Schyler'),
                         ),
                       );
                     }
@@ -141,20 +147,25 @@ class Home extends StatelessWidget {
         // Action Button to log out
         floatingActionButton: FloatingActionButton.extended(
           heroTag: 'logout',
-          onPressed: () {
+          onPressed: () async {
+            // Show logout confirmation dialog
             Get.dialog(AlertDialog(
               title: const Text('Logout'),
               content: const Text('Are you sure you want to logout?'),
               actions: [
                 TextButton(
                   onPressed: () {
-                    Get.back();
+                    Get.back(); // Close the dialog
                   },
                   child: const Text('Cancel'),
                 ),
                 TextButton(
-                  onPressed: () {
-                    Get.back();
+                  onPressed: () async {
+                    // Clear UID from secure storage
+                    final FlutterSecureStorage storage = FlutterSecureStorage();
+                    await storage.delete(
+                        key:
+                            'uid'); // this will remove uid after pressing logout
                     Get.offAll(() => Login());
                   },
                   child: const Text('Logout'),

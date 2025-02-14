@@ -2,7 +2,6 @@ import 'package:flutterfloor/database/app_database.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-
 class Logincontroller extends GetxController {
   final AppDatabase database;
   Logincontroller({required this.database});
@@ -35,7 +34,7 @@ class Logincontroller extends GetxController {
     if (user != null) {
       // Save the user's UID securely to keep them logged in
       await _secureStorage.write(key: 'uid', value: user.uid);
-      
+
       return true;
     } else {
       Get.snackbar('Error', 'Invalid Username or Password');

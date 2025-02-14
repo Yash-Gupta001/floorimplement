@@ -12,7 +12,8 @@ import '../entity/underemployee_entity.dart';
 class Updatecontroller extends GetxController {
   final AppDatabase database;
   RxString selectedDesignation = ''.obs;
-  Rx<Uint8List?> selectedImage = Rx<Uint8List?>(null); // Store the selected image
+  Rx<Uint8List?> selectedImage =
+      Rx<Uint8List?>(null); // Store the selected image
 
   var underemployees = <UnderemployeeEntity>[].obs;
 
@@ -118,7 +119,7 @@ class Updatecontroller extends GetxController {
                           // to pick image from the gallery
                           final XFile? pickedFile = await _picker.pickImage(
                               source: ImageSource.gallery);
-                      
+
                           if (pickedFile != null) {
                             // Convert the picked image to bytes
                             final imageFile = File(pickedFile.path);
