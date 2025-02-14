@@ -87,7 +87,6 @@ class Home extends StatelessWidget {
                                   Get.to(() => Showunderemployee(employee.id!));
                                 },
                               ),
-
                               SizedBox(height: 13),
 ///////////////////////////////////////////////////////////////////////////////////////
                               //Button to add a member
@@ -104,10 +103,30 @@ class Home extends StatelessWidget {
                           ),
                         );
                       } else {
-                        return Text('No employee found');
+                        return Center(
+                          child: Text(
+                            'No employee found',
+                            style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.red,
+                            fontWeight: FontWeight.w900,
+                            fontFamily: 'Schyler'
+                          ),
+                            ));
                       }
-                    } else {
-                      return Text('No data available');
+                    } 
+                    else {
+                      return Center(
+                        child: Text(
+                          'No data available !',
+                          style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.red,
+                            fontWeight: FontWeight.w900,
+                            fontFamily: 'Schyler'
+                          ),
+                          ),
+                      );
                     }
                   },
                 ),
