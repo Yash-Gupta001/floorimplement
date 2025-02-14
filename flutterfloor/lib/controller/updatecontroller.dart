@@ -64,6 +64,7 @@ class Updatecontroller extends GetxController {
     // Set the selected designation to the current underemployee designation
     selectedDesignation.value = underemployee.designation;
 
+    // ignore: no_leading_underscores_for_local_identifiers
     final ImagePicker _picker = ImagePicker();
 
     showDialog(

@@ -23,6 +23,8 @@ dependencies:
   flutter_launcher_icons: ^0.14.3
   image_picker: ^1.1.2
   flutter_secure_storage: ^9.2.4
+  theme_provider: ^0.6.0
+  shared_preferences: ^2.5.2
 
 dev_dependencies:
   flutter_test:
@@ -51,13 +53,10 @@ flutter_launcher_icons:
 flutter:
 
   uses-material-design: true
-  # To add assets to your application, add an assets section, like this:
+# To add assets to your application, add an assets section, like this:
   assets:
     - assets\icon\icon.png  
 # dart run flutter_launcher_icons:generate
-
- 
-
   fonts:
     - family: Schyler
       fonts:
