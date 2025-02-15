@@ -325,6 +325,21 @@ class _$Underemployeedao extends Underemployeedao {
       _underemployeeEntityDeletionAdapter;
 
   @override
+  Future<List<UnderemployeeEntity>> searchEmployeesByName(String query) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM underemployee_entity WHERE name LIKE ?1',
+        mapper: (Map<String, Object?> row) => UnderemployeeEntity(
+            id: row['id'] as int?,
+            name: row['name'] as String,
+            email: row['email'] as String,
+            phone: row['phone'] as String,
+            employeeId: row['employeeId'] as int,
+            designation: row['designation'] as String,
+            photo: row['photo'] as Uint8List?),
+        arguments: [query]);
+  }
+
+  @override
   Future<List<UnderemployeeEntity>> findUnderemployeesByEmployeeId(
       int employeeId) async {
     return _queryAdapter.queryList(

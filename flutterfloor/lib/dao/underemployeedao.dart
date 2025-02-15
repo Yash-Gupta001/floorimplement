@@ -4,6 +4,12 @@ import '../entity/underemployee_entity.dart';
 
 @dao
 abstract class Underemployeedao {
+
+  // Search employee by name
+  @Query('SELECT * FROM underemployee_entity WHERE name LIKE :query')
+  Future<List<UnderemployeeEntity>> searchEmployeesByName(String query);
+
+
   @Query('SELECT * FROM underemployee_entity WHERE employeeId = :employeeId')
   Future<List<UnderemployeeEntity>> findUnderemployeesByEmployeeId(
       int employeeId);

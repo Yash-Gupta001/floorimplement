@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/logincontroller.dart';
 import '../database/app_database.dart';
-import '../ui_component/appbar.dart';
-import '../ui_component/button.dart';
+import '../ui_component/customappbar.dart';
+import '../ui_component/custombutton.dart';
 import 'Home.dart';
 import 'Register.dart';
 

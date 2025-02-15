@@ -7,8 +7,8 @@ import '../controller/insertcontroller.dart';
 import '../controller/logincontroller.dart';
 import '../database/app_database.dart';
 import '../entity/employee_entity.dart';
-import '../ui_component/appbar.dart';
-import '../ui_component/button.dart';
+import '../ui_component/customappbar.dart';
+import '../ui_component/custombutton.dart';
 import 'showunderemployee.dart';
 import 'login.dart';
 

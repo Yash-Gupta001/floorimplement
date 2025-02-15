@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:flutterfloor/database/app_database.dart';
 
 import '../controller/registercontroller.dart';
-import '../ui_component/appbar.dart';
-import '../ui_component/button.dart';
+import '../ui_component/customappbar.dart';
+import '../ui_component/custombutton.dart';
 
 class Register extends StatelessWidget {
   final Registercontroller controller =

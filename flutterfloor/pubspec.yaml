@@ -25,6 +25,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   theme_provider: ^0.6.0
   shared_preferences: ^2.5.2
+  url_launcher: ^6.1.5
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +52,6 @@ flutter_launcher_icons:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   uses-material-design: true
 # To add assets to your application, add an assets section, like this:
   assets:

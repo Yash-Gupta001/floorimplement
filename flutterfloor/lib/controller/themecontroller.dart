@@ -19,7 +19,7 @@ class ThemeController extends GetxController {
   // Toggle theme mode and save it to SharedPreferences
   void toggleTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    isDarkMode.value = !isDarkMode.value;
+    isDarkMode.value = !isDarkMode.value;                     
     prefs.setBool('isDarkMode', isDarkMode.value);
   }
 }
