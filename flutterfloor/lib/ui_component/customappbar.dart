@@ -16,6 +16,11 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    
+    double appBarHeight = screenHeight * 0.08;
+
     return AppBar(
       leading: leading ? IconButton(
         icon: Icon(Icons.arrow_back,
@@ -31,12 +36,13 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         child: Text(
           title,
           style: TextStyle(
-            fontSize: 24,
+            fontSize: screenWidth * 0.06,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
       ),
+      toolbarHeight: appBarHeight,
     );
   }
 

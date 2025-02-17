@@ -74,7 +74,7 @@ class Insertcontroller extends GetxController {
     'HR'
   ];
 
-  final ImagePicker _picker = ImagePicker();
+  final ImagePicker picker = ImagePicker();
 
   showDialog(
     context: context,
@@ -130,7 +130,7 @@ class Insertcontroller extends GetxController {
 
                       child: ElevatedButton(
                         onPressed: () async {
-                          final XFile? pickedFile = await _picker.pickImage(
+                          final XFile? pickedFile = await picker.pickImage(
                               source: ImageSource.gallery);
                       
                           if (pickedFile != null) {

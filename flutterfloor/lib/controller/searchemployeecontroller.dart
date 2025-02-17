@@ -1,13 +1,32 @@
 import 'package:get/get.dart';
+import '../entity/underemployee_entity.dart';
+import '../controller/updatecontroller.dart';
 
-import '../database/app_database.dart';
+class Searchemployeecontroller extends GetxController {
+  var searchResults = <UnderemployeeEntity>[].obs;
+  var searchQuery = ''.obs;
 
-class Searchemployeecontroller extends GetxController{
-  final AppDatabase database;
+  final Updatecontroller updateController;
 
-  Searchemployeecontroller({required this.database});
+  Searchemployeecontroller({required this.updateController});
 
-  void Underemployeesearch(){
-    
+  // Search method to filter employees by name
+  void searchEmployees(String query) {
+  searchQuery.value = query;
+  if (query.isNotEmpty) {
+    var results = updateController.underemployees
+        .where((employee) =>
+            employee.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    searchResults.value = results;
+
+    // If no results are found, show a message for no employees found
+    if (results.isEmpty) {
+      searchResults.value = [];
+    }
+  } else {
+    searchResults.value = updateController.underemployees;
   }
+}
+
 }

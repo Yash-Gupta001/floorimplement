@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfloor/ui_component/customsearchbar.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../controller/updatecontroller.dart';
+import '../controller/searchemployeecontroller.dart';
 import '../database/app_database.dart';
 import '../ui_component/customappbar.dart';
+import '../ui_component/customdeletebutton.dart';
+import '../ui_component/customsearchbar.dart';
 
 class Showunderemployee extends StatefulWidget {
   final int employeeId;
@@ -14,15 +16,15 @@ class Showunderemployee extends StatefulWidget {
   const Showunderemployee(this.employeeId);
 
   @override
-  // ignore: library_private_types_in_public_api
   _ShowunderemployeeState createState() => _ShowunderemployeeState();
 }
 
 class _ShowunderemployeeState extends State<Showunderemployee> {
-  final Updatecontroller controller =
-      Get.put(Updatecontroller(database: Get.find()));
-
+  final Updatecontroller controller = Get.put(Updatecontroller(database: Get.find()));
+  final Searchemployeecontroller searchController = Get.put(Searchemployeecontroller(updateController: Get.find()));
   final AppDatabase database = Get.find<AppDatabase>();
+
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -39,40 +41,31 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
         body: Column(
           children: [
 
+            CustomSearchBar(controller: _searchController),
 
-            GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: CustomSearchBar(
-                controller: SearchController(),
-                onChanged: (value) {
-                  // Handle search text change
-                  
-                  print('Search text: $value');
-                }, 
-                
-/*---------------to be corrected------------------------------------------------------------*/
-
-                database: Get.find(), 
-/**-----------------------------------------------------------------------------------------*/
-
-
-              ),
-            ),
-
-
-
-            // List of underemployees using Obx
+            // List of underemployees
             Expanded(
               child: Obx(() {
-                if (controller.underemployees.isEmpty) {
-                  return const Center(child: Text('No employees found'));
+                //searchResults from the search controller
+                final employeesToDisplay = searchController.searchResults.isNotEmpty
+                    ? searchController.searchResults
+                    : controller.underemployees;
+
+                if (employeesToDisplay.isEmpty) {
+                  return Center(
+                    child: Text(
+                      searchController.searchResults.isNotEmpty
+                          ? 'No employees found'
+                          : 'No employees available',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  );
                 }
+
                 return ListView.builder(
-                  itemCount: controller.underemployees.length,
+                  itemCount: employeesToDisplay.length,
                   itemBuilder: (context, index) {
-                    var underemployee = controller.underemployees[index];
+                    var underemployee = employeesToDisplay[index];
 
                     return Slidable(
                       endActionPane: ActionPane(
@@ -81,7 +74,7 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                         children: [
                           // Delete slidable button
                           Flexible(
-                            flex: 1, // Setting flex value to non-zero
+                            flex: 1,
                             child: Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: SlidableAction(
@@ -89,9 +82,7 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                                   // Delete underemployee from the database
                                   await database.underemployeedao
                                       .deleteUnderemployee(underemployee);
-                                  // Update the observable list
-                                  controller.underemployees
-                                      .remove(underemployee);
+                                  controller.underemployees.remove(underemployee);
                                   // Show a snackbar
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -109,7 +100,6 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                               ),
                             ),
                           ),
-
                           // Update Employee data in the database
                           Flexible(
                             flex: 1,
@@ -201,7 +191,6 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                                   ),
                                 ),
                                 SizedBox(height: 10),
-
                                 Center(
                                   child: Text(
                                     'Contact employee',
@@ -210,7 +199,6 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                                     ),
                                   ),
                                 ),
-                                // to contact employee from email and whatsapp
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -240,7 +228,6 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                                         launchUrl(Uri.parse(emailUrl));
                                       },
                                     ),
-
                                     SizedBox(width: 4),
                                     IconButton(
                                       icon: Icon(
@@ -272,7 +259,8 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
             // For deleting all Employees
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: ElevatedButton(
+              child: CustomdeleteButton(
+                text: 'Delete All Employees', 
                 onPressed: () {
                   Get.dialog(
                     AlertDialog(
@@ -311,23 +299,7 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                     ),
                   );
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 15),
                 ),
-                child: Text(
-                  'Delete All Employees',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
             ),
           ],
         ),
@@ -335,79 +307,3 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
     );
   }
 }
-
-
-
-
-/**
- 
-
- import 'package:flutter/material.dart';
-import 'package:flutterfloor/ui_component/customsearchbar.dart';
-import 'package:get/get.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import '../controller/updatecontroller.dart';
-import '../database/app_database.dart';
-import '../ui_component/customappbar.dart';
-import '../entity/underemployee_entity.dart';
-
-class Showunderemployee extends StatefulWidget {
-  final int employeeId;
-
-  const Showunderemployee(this.employeeId);
-
-  @override
-  _ShowunderemployeeState createState() => _ShowunderemployeeState();
-}
-
-class _ShowunderemployeeState extends State<Showunderemployee> {
-  final Updatecontroller controller = Get.put(Updatecontroller(database: Get.find()));
-  final AppDatabase database = Get.find<AppDatabase>();
-  List<UnderemployeeEntity> searchResults = [];
-  TextEditingController _searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    // Fetch underemployees when the screen loads
-    controller.fetchUnderemployees(widget.employeeId);
-  }
-
-  // Search method to fetch employees by name
-  void _searchEmployees(String searchQuery) async {
-    if (searchQuery.isNotEmpty) {
-      // Query employees from database
-      List<UnderemployeeEntity> results = await database.underemployeedao.searchEmployeesByName('%$searchQuery%');
-      setState(() {
-        searchResults = results;
-      });
-    } else {
-      // If search is empty, reset the results
-      setState(() {
-        searchResults = [];
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomAppbar(title: 'Employee Data', leading: true),
-        body: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: CustomSearchBar(
-                controller: _searchController,
-                onChanged: (value) {
-                  // Handle search text change
-                  _searchEmployees(value);
-                },
-              ),
-            ),
- */

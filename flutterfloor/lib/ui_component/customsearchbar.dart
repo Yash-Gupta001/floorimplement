@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfloor/database/app_database.dart';
+import 'package:get/get.dart';
 
+import '../controller/searchemployeecontroller.dart';
 
 class CustomSearchBar extends StatelessWidget {
-  final AppDatabase database;
   final TextEditingController controller;
   final Function(String)? onChanged;
+  
+  final Searchemployeecontroller searchController = Get.put(Searchemployeecontroller(updateController: Get.find()));
 
-  const CustomSearchBar({required this.controller, this.onChanged, required this.database});
+  
+  CustomSearchBar({super.key, required this.controller, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +20,14 @@ class CustomSearchBar extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: screenWidth * 0.05,
-        vertical: screenHeight * 0.02,
+        vertical: screenHeight * 0.01,
       ),
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
         },
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
           decoration: BoxDecoration(
             color: Colors.white, 
             borderRadius: BorderRadius.circular(30),
@@ -47,7 +50,15 @@ class CustomSearchBar extends StatelessWidget {
               Expanded(
                 child: TextField(
                   controller: controller,
-                  onChanged: onChanged,
+                  onChanged: (value) {
+                    // If no custom onchanged function is passed
+                    if (onChanged != null) {
+                      onChanged!(value);
+                    } else {
+                      // Otherwise, use the searchController to search employees
+                      searchController.searchEmployees(value);
+                    }
+                  },
                   decoration: InputDecoration(
                     hintText: 'Search employee',
                     border: InputBorder.none,
