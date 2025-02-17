@@ -90,14 +90,20 @@ class Home extends StatelessWidget {
                                           fontSize: 16,
                                           color: Colors.grey[700])),
                                   SizedBox(height: 20),
+
                                   CustomButton(
                                     text: 'Get Employee Details',
                                     onPressed: () {
                                       // navigate to the employee details
                                       Get.to(() =>
-                                          Showunderemployee(employee!.id!));
+                                          Showunderemployee(employee!.id!),
+                                          transition: Transition.rightToLeft,
+                                          duration: Duration(milliseconds: 300),
+                                          );
                                     },
                                   ),
+
+
                                   SizedBox(height: 13),
                                   CustomButton(
                                     text: 'Add Employee',

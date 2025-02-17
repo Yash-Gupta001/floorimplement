@@ -20,8 +20,10 @@ class Showunderemployee extends StatefulWidget {
 }
 
 class _ShowunderemployeeState extends State<Showunderemployee> {
-  final Updatecontroller controller = Get.put(Updatecontroller(database: Get.find()));
-  final Searchemployeecontroller searchController = Get.put(Searchemployeecontroller(updateController: Get.find()));
+  final Updatecontroller controller =
+      Get.put(Updatecontroller(database: Get.find()));
+  final Searchemployeecontroller searchController =
+      Get.put(Searchemployeecontroller(updateController: Get.find()));
   final AppDatabase database = Get.find<AppDatabase>();
 
   final TextEditingController _searchController = TextEditingController();
@@ -40,23 +42,35 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
         appBar: CustomAppbar(title: 'Employee Data', leading: true),
         body: Column(
           children: [
-
-            CustomSearchBar(controller: _searchController),
+            GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: CustomSearchBar(controller: _searchController),
+            ),
 
             // List of underemployees
             Expanded(
               child: Obx(() {
-                //searchResults from the search controller
-                final employeesToDisplay = searchController.searchResults.isNotEmpty
-                    ? searchController.searchResults
-                    : controller.underemployees;
+                // Search results or full list if no search results
+                final employeesToDisplay =
+                    searchController.searchResults.isNotEmpty
+                        ? searchController.searchResults
+                        : controller.underemployees;
 
-                if (employeesToDisplay.isEmpty) {
+                if (searchController.errorMessage.isNotEmpty) {
+                  // Display error message if there's no employee found
                   return Center(
                     child: Text(
-                      searchController.searchResults.isNotEmpty
-                          ? 'No employees found'
-                          : 'No employees available',
+                      searchController.errorMessage.value,
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  );
+                } else if (employeesToDisplay.isEmpty) {
+                  // If no employees are available
+                  return Center(
+                    child: Text(
+                      'No employees available',
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                   );
@@ -82,12 +96,14 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                                   // Delete underemployee from the database
                                   await database.underemployeedao
                                       .deleteUnderemployee(underemployee);
-                                  controller.underemployees.remove(underemployee);
+                                  controller.underemployees
+                                      .remove(underemployee);
                                   // Show a snackbar
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content: Text(
-                                            '${underemployee.name} Deleted')),
+                                        '${underemployee.name} Deleted'
+                                        )),
                                   );
                                 },
                                 backgroundColor: Colors.red,
@@ -100,7 +116,7 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                               ),
                             ),
                           ),
-                          // Update Employee data in the database
+                          // Update employee data in the database
                           Flexible(
                             flex: 1,
                             child: Padding(
@@ -236,13 +252,12 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                                         size: 28,
                                       ),
                                       onPressed: () {
-                                        String phoneNumber = underemployee.phone;
+                                        String phoneNumber =
+                                            underemployee.phone;
                                         String phoneUrl = "tel:$phoneNumber";
                                         launchUrl(Uri.parse(phoneUrl));
                                       },
                                     ),
-
-
                                   ],
                                 ),
                               ],
@@ -260,7 +275,7 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: CustomdeleteButton(
-                text: 'Delete All Employees', 
+                text: 'Delete All Employees',
                 onPressed: () {
                   Get.dialog(
                     AlertDialog(
@@ -275,10 +290,8 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                           },
                           child: const Text(
                             'Cancel',
-                            style: TextStyle(
-                              color: Colors.green
-                            ),
-                            ),
+                            style: TextStyle(color: Colors.green),
+                          ),
                         ),
                         // Delete button
                         TextButton(
@@ -290,16 +303,14 @@ class _ShowunderemployeeState extends State<Showunderemployee> {
                           },
                           child: const Text(
                             'Delete',
-                            style: TextStyle(
-                              color: Colors.redAccent
-                            ),
-                            ),
+                            style: TextStyle(color: Colors.red),
+                          ),
                         ),
                       ],
                     ),
                   );
                 },
-                ),
+              ),
             ),
           ],
         ),

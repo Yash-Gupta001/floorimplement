@@ -9,7 +9,6 @@ class CustomSearchBar extends StatelessWidget {
   
   final Searchemployeecontroller searchController = Get.put(Searchemployeecontroller(updateController: Get.find()));
 
-  
   CustomSearchBar({super.key, required this.controller, this.onChanged});
 
   @override

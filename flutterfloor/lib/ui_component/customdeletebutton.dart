@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomdeleteButton extends StatelessWidget {
+  class CustomdeleteButton extends StatefulWidget {
   final String text;
   final VoidCallback onPressed;
   final Color backgroundColor;
@@ -20,27 +20,70 @@ class CustomdeleteButton extends StatelessWidget {
   });
 
   @override
+  _CustomdeleteButtonState createState() => _CustomdeleteButtonState();
+}
+
+class _CustomdeleteButtonState extends State<CustomdeleteButton> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: Duration(milliseconds: 150),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.9).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Center(
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.9,
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(backgroundColor),
-            shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
+      child: GestureDetector(
+        onTapDown: (_) {
+          _animationController.forward(); // Trigger scale down effect
+        },
+        onTapUp: (_) {
+          _animationController.reverse(); // Scale back up after tap
+        },
+        onTap: () {
+          widget.onPressed(); // Call the original onPressed callback
+        },
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: ScaleTransition(
+            scale: _scaleAnimation,
+            child: ElevatedButton(
+              onPressed: null, // onPressed is handled by GestureDetector
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(widget.backgroundColor),
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(widget.borderRadius),
+                  ),
+                ),
+              ),
+              child: Text(
+                widget.text,
+                style: TextStyle(
+                  color: widget.textColor,
+                  fontSize: widget.fontSize,
+                  wordSpacing: 2,
+                ),
               ),
             ),
-          ),
-          child: Text(
-            text,
-            style:
-              TextStyle(color: textColor, fontSize: fontSize, wordSpacing: 2),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 }
