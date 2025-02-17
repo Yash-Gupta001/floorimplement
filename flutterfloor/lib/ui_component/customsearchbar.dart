@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../controller/searchemployeecontroller.dart';
 
 class CustomSearchBar extends StatelessWidget {
+  final FocusNode unfocus = FocusNode();
   final TextEditingController controller;
   final Function(String)? onChanged;
-  
-  final Searchemployeecontroller searchController = Get.put(Searchemployeecontroller(updateController: Get.find()));
+
+  //instance of your search controller
+  final Searchemployeecontroller searchController =
+      Get.put(Searchemployeecontroller(updateController: Get.find()));
 
   CustomSearchBar({super.key, required this.controller, this.onChanged});
 
@@ -23,12 +27,15 @@ class CustomSearchBar extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus();
+          // Dismiss the keyboard when tapping outside of the search field
+          unfocus.unfocus();
+          FocusScope.of(context).requestFocus(FocusNode());
+          SystemChannels.textInput.invokeMethod('TextInput.hide');
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
           decoration: BoxDecoration(
-            color: Colors.white, 
+            color: Colors.white,
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
@@ -48,13 +55,13 @@ class CustomSearchBar extends StatelessWidget {
               SizedBox(width: screenWidth * 0.03),
               Expanded(
                 child: TextField(
+                  focusNode: unfocus,
                   controller: controller,
                   onChanged: (value) {
-                    // If no custom onchanged function is passed
                     if (onChanged != null) {
                       onChanged!(value);
                     } else {
-                      // Otherwise, use the searchController to search employees
+                      //searchController to search employees
                       searchController.searchEmployees(value);
                     }
                   },
