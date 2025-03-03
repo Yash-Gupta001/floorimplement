@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/logincontroller.dart';
+import '../controller/employee_login_controller.dart';
 import '../database/app_database.dart';
-import '../ui_component/customappbar.dart';
-import '../ui_component/custombutton.dart';
+import '../ui_component/custom_appbar.dart';
+import '../ui_component/custom_button.dart';
 import 'Home.dart';
 import 'Register.dart';
 

@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../controller/updatecontroller.dart';
-import '../controller/searchemployeecontroller.dart';
+import '../controller/update_controller.dart';
+import '../controller/search_employee_controller.dart';
 import '../database/app_database.dart';
-import '../ui_component/customappbar.dart';
-import '../ui_component/customdeletebutton.dart';
-import '../ui_component/customsearchbar.dart';
+import '../ui_component/custom_appbar.dart';
+import '../ui_component/custom_delete_button.dart';
+import '../ui_component/custom_search_bar.dart';
 
 class Showunderemployee extends StatefulWidget {
   final int employeeId;

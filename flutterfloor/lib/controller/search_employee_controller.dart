@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../entity/underemployee_entity.dart';
-import '../controller/updatecontroller.dart';
+import 'update_controller.dart';
 
 class Searchemployeecontroller extends GetxController {
   var searchResults = <UnderemployeeEntity>[].obs;

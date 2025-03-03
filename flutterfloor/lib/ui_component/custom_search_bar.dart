@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../controller/searchemployeecontroller.dart';
+import '../controller/search_employee_controller.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final FocusNode unfocus = FocusNode();

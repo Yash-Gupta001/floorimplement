@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'package:floor/floor.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
-import '../dao/employeedao.dart';
-import '../dao/underemployeedao.dart';
+import '../dao/employee_dao.dart';
+import '../dao/under_employee_dao.dart';
 import '../entity/employee_entity.dart';
 import '../entity/underemployee_entity.dart';
 

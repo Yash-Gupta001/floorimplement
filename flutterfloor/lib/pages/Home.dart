@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../controller/insertcontroller.dart';
-import '../controller/logincontroller.dart';
+import '../controller/insert_under_employee_controller.dart';
+import '../controller/employee_login_controller.dart';
 import '../database/app_database.dart';
 import '../entity/employee_entity.dart';
-import '../ui_component/customappbar.dart';
-import '../ui_component/custombutton.dart';
-import 'showunderemployee.dart';
+import '../ui_component/custom_appbar.dart';
+import '../ui_component/custom_button.dart';
+import 'show_under_employee.dart';
 import 'login.dart';
 
 class Home extends StatelessWidget {
