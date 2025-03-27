@@ -4,9 +4,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:typed_data';
 
-import '../dao/under_employee_dao.dart';
-import '../database/app_database.dart';
-import '../entity/underemployee_entity.dart';
+import '../floor_database/dao/under_employee_dao.dart';
+import '../floor_database/database/app_database.dart';
+import '../floor_database/entity/underemployee_entity.dart';
 
 class Insertcontroller extends GetxController {
   final AppDatabase database;

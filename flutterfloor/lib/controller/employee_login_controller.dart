@@ -1,4 +1,4 @@
-import 'package:flutterfloor/database/app_database.dart';
+import 'package:flutterfloor/floor_database/database/app_database.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutterfloor/database/app_database.dart';
+import 'package:flutterfloor/floor_database/database/app_database.dart';
 
 import '../controller/register_employee_controller.dart';
 import '../ui_component/custom_appbar.dart';

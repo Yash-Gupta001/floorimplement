@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../dao/under_employee_dao.dart';
-import '../database/app_database.dart';
-import '../entity/underemployee_entity.dart';
+import '../floor_database/dao/under_employee_dao.dart';
+import '../floor_database/database/app_database.dart';
+import '../floor_database/entity/underemployee_entity.dart';
 
 class Updatecontroller extends GetxController {
   final AppDatabase database;

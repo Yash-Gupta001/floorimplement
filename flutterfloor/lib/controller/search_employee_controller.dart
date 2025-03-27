@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../entity/underemployee_entity.dart';
+import '../floor_database/entity/underemployee_entity.dart';
 import 'update_controller.dart';
 
 class Searchemployeecontroller extends GetxController {

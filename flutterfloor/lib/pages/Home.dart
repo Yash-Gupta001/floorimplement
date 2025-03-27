@@ -5,8 +5,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../controller/insert_under_employee_controller.dart';
 import '../controller/employee_login_controller.dart';
-import '../database/app_database.dart';
-import '../entity/employee_entity.dart';
+import '../floor_database/database/app_database.dart';
+import '../floor_database/entity/employee_entity.dart';
 import '../ui_component/custom_appbar.dart';
 import '../ui_component/custom_button.dart';
 import 'show_under_employee.dart';
